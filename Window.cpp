@@ -13,16 +13,8 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 {
 	width = windowWidth;
 	height = windowHeight;
-	rotax = 0.0f;
-	rotay = 0.0f;
-	rotaz = 0.0f;
-	articulacion1 = 0.0f;
-	articulacion2 = 0.0f;
-	articulacion3 = 0.0f;
-	articulacion4 = 0.0f;
-	articulacion5 = 0.0f;
-	articulacion6 = 0.0f;
-	
+	muevex = 2.0f;
+	mueveh = 0.0f;
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -45,7 +37,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	//CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Practica 5: Optimización y Carga de Modelos.", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Practica07:Iluminacion 1", NULL, NULL);
 
 	if (!mainWindow)
 	{
@@ -88,7 +80,6 @@ void Window::createCallbacks()
 	glfwSetKeyCallback(mainWindow, ManejaTeclado);
 	glfwSetCursorPosCallback(mainWindow, ManejaMouse);
 }
-
 GLfloat Window::getXChange()
 {
 	GLfloat theChange = xChange;
@@ -103,6 +94,9 @@ GLfloat Window::getYChange()
 	return theChange;
 }
 
+
+
+
 void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode)
 {
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -111,130 +105,24 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-
-	
-	if (key == GLFW_KEY_E)
-	{
-		theWindow->rotax += 10.0;
-	}
-	if (key == GLFW_KEY_R)
-	{
-		theWindow->rotay += 10.0; //rotar sobre el eje y 10 grados
-	}
-	if (key == GLFW_KEY_T)
-	{
-		theWindow->rotaz += 10.0;
-	}
-	if (key == GLFW_KEY_F)
-	{
-		if (theWindow->anguloPDDD > 45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPDDD += 10.0;
-		}
-	}
-	if (key == GLFW_KEY_G)
-	{
-		if (theWindow->anguloPDDD < -45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPDDD -= 10.0;
-		}
-	}
-
-	if (key == GLFW_KEY_H)
-	{
-		if (theWindow->anguloPDID > 45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPDID += 10.0;
-		}
-	}
-	if (key == GLFW_KEY_J)
-	{
-		if (theWindow->anguloPDID < -45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPDID -= 10.0;
-		}
-	}
-
-	if (key == GLFW_KEY_K)
-	{
-		if (theWindow->anguloPADD > 45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPADD += 10.0;
-		}
-	}
-	if (key == GLFW_KEY_L)
-	{
-		if (theWindow->anguloPADD < 10.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPADD -= 10.0;
-		}
-	}
-
-	if (key == GLFW_KEY_E)
-	{
-		if (theWindow->anguloPAID > 45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPAID += 10.0;
-		}
-	}
-	if (key == GLFW_KEY_R)
-	{
-		if (theWindow->anguloPAID < -45.0)
-		{
-		}
-		else
-		{
-			theWindow->anguloPAID -= 10.0;
-		}
-	}
-	
-	if (key == GLFW_KEY_T)
-	{
-		if (theWindow->articulacion1 > 25.0)
-		{
-		}
-		else
-		{
-			theWindow->articulacion1 += 10.0;
-		}
-	}
 	if (key == GLFW_KEY_Y)
 	{
-		if (theWindow->articulacion1 < -25.0)
-		{
-		}
-		else
-		{
-			theWindow->articulacion1 -= 10.0;
-		}
+		theWindow-> muevex += 1.0;
+	}
+	if (key == GLFW_KEY_U)
+	{
+		theWindow-> muevex -= 1.0;
+	}
+	if (key == GLFW_KEY_O)
+	{
+		theWindow->mueveh -= 1.0;
+	}
+	if (key == GLFW_KEY_P)
+	{
+		theWindow->mueveh += 1.0;
 	}
 
-	if (key == GLFW_KEY_D && action == GLFW_PRESS)
-	{
-		const char* key_name = glfwGetKeyName(GLFW_KEY_D, 0);
-		//printf("se presiono la tecla: %s\n",key_name);
-	}
+
 
 	if (key >= 0 && key < 1024)
 	{
