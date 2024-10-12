@@ -15,6 +15,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	height = windowHeight;
 	muevex = 2.0f;
 	mueveh = 0.0f;
+	dato = true;
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -37,7 +38,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	//CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Practica07:Iluminacion 1", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Proyecto Finals", NULL, NULL);
 
 	if (!mainWindow)
 	{
@@ -108,6 +109,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	if (key == GLFW_KEY_Y)
 	{
 		theWindow-> muevex += 1.0;
+		theWindow-> dato = false;
 	}
 	if (key == GLFW_KEY_U)
 	{
@@ -120,6 +122,14 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	if (key == GLFW_KEY_P)
 	{
 		theWindow->mueveh += 1.0;
+	}
+	if (key == GLFW_KEY_L)
+	{
+		theWindow->dato = false;
+	}
+	if (key == GLFW_KEY_K)
+	{
+		theWindow->dato = true;
 	}
 
 
