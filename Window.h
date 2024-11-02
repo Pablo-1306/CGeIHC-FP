@@ -20,7 +20,8 @@ public:
 		return  glfwWindowShouldClose(mainWindow);}
 	bool* getsKeys() { return keys; }
 	void swapBuffers() { return glfwSwapBuffers(mainWindow); }
-	
+	GLFWwindow* getMainWindow() { return mainWindow; };
+
 	~Window();
 private: 
 	GLFWwindow *mainWindow;
