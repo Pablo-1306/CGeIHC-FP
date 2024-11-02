@@ -1,10 +1,9 @@
 /*
-Animación:
-Sesión 1:
-Simple o básica:Por banderas y condicionales (más de 1 transformación geométrica se ve modificada
-Sesión 2
-Compleja: Por medio de funciones y algoritmos.
-Textura Animada
+Proyecto Final de Computación Gráfica e Interacción Humano Computadora
+
+Hernandez Solis Brandon
+Reyes Arroyo Pablo Antonio
+
 */
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
@@ -64,12 +63,20 @@ bool down = true;
 float a_ala = 0;
 float a_ala2 = 0;
 int rot = 0;
-
-// esp arq
-float e_x = 2.5;
-float e_y = 2.0;
-float e_z = 0.0;
-
+float rotDado_8;
+float rotDado8;
+float rotDado_8Offset;
+bool baja;
+int c;
+int c_2;
+float salto;
+float movDado8;
+float movOffsetLet;
+float rotDado4;
+float rotDado_4;
+float lastRot;
+float lastRot4;
+int pasosEnTablero;
 
 float val = 0.0f;
 
@@ -77,6 +84,8 @@ float val_l;
 float val_c;
 float val_o;
 
+//variables para keyframes
+float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -95,6 +104,7 @@ Texture Numero1Texture;
 Texture Numero2Texture;
 Texture Letrero;
 Texture tablero;
+Texture Dado4;
 
 
 Model Kitt_M;
@@ -217,7 +227,7 @@ void CreateObjects()
 
 
 	};
-	
+
 
 	unsigned int flechaIndices[] = {
 	   0, 1, 2,
@@ -258,15 +268,40 @@ void CreateObjects()
 
 	};
 
-	Mesh *obj1 = new Mesh();
+	unsigned int dado4Indices[] = {
+	   0, 1, 2,
+	   3, 4, 5,
+	   6, 7, 8,
+	   9, 10, 11
+	};
+
+	GLfloat dado4Vertices[] = {
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,		1.0f, 0.0f, -1.0f,
+		//
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,		1.0f, 0.0f, -1.0f,
+		0.0f, 0.0f, -0.5f,		0.065f, 0.86f,			0.0f, 0.0f, 1.0f,
+		//
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		0.0f, 0.0f, -0.5f,		0.905f, 0.86f,			0.0f, 0.0f, 1.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		//
+		0.0f, 0.0f, -0.5f,		0.4855f, 0.07f,			0.0f, 0.0f, 1.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,			0.0f, 0.0f, 1.0f,
+	};
+
+	Mesh* obj1 = new Mesh();
 	obj1->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj1);
 
-	Mesh *obj2 = new Mesh();
+	Mesh* obj2 = new Mesh();
 	obj2->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj2);
 
-	Mesh *obj3 = new Mesh();
+	Mesh* obj3 = new Mesh();
 	obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(obj3);
 
@@ -291,7 +326,14 @@ void CreateObjects()
 	obj8->CreateMesh(flechaVertices, flechaIndices, 32, 6);
 	meshList.push_back(obj8);
 
+	Mesh* dado4 = new Mesh();
+	dado4->CreateMesh(dado4Vertices, dado4Indices, 96, 12);
+	meshList.push_back(dado4);
+
 }
+
+
+
 
 void crearTablero() {
 	unsigned int floorIndices[] = {
@@ -315,11 +357,94 @@ void crearTablero() {
 
 void CreateShaders()
 {
-	Shader *shader1 = new Shader();
+	Shader* shader1 = new Shader();
 	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
 }
 
+
+///////////////////////////////KEYFRAMES/////////////////////
+
+
+bool animacion = false;
+
+
+
+//NEW// Keyframes
+float posXDado8 = 20.0, posYDado8 = 10.0, posZDado8 = 20.0;
+float movDado8_x = 0.0f, movDado8_y = 0.0f;
+float giroDado8 = 0;
+
+#define MAX_FRAMES 100
+int i_max_steps = 90;
+int i_curr_steps = 4;
+typedef struct _frame
+{
+	//Variables para GUARDAR Key Frames
+	float movDado8_x;		//Variable para PosicionX
+	float movDado8_y;		//Variable para PosicionY
+	float movDado8_xInc;		//Variable para IncrementoX
+	float movDado8_yInc;		//Variable para IncrementoY
+	float giroDado8;
+	float giroDado8Inc;
+}FRAME;
+
+FRAME KeyFrame[MAX_FRAMES];
+int FrameIndex = 4;			//introducir datos
+bool play = false;
+int playIndex = 0;
+
+void resetElements(void) //Tecla 0
+{
+	movDado8_x = KeyFrame[0].movDado8_x;
+	movDado8_y = KeyFrame[0].movDado8_y;
+	giroDado8 = KeyFrame[0].giroDado8;
+}
+
+void interpolation(void)
+{
+	KeyFrame[playIndex].movDado8_xInc = (KeyFrame[playIndex + 1].movDado8_x - KeyFrame[playIndex].movDado8_x) / i_max_steps;
+	KeyFrame[playIndex].movDado8_yInc = (KeyFrame[playIndex + 1].movDado8_y - KeyFrame[playIndex].movDado8_y) / i_max_steps;
+	KeyFrame[playIndex].giroDado8Inc = (KeyFrame[playIndex + 1].giroDado8 - KeyFrame[playIndex].giroDado8) / i_max_steps;
+}
+
+
+void animate(void)
+{
+	//Movimiento del objeto con barra espaciadora
+	if (play)
+	{
+		if (i_curr_steps >= i_max_steps) //fin de animación entre frames?
+		{
+			playIndex++;
+			printf("playindex : %d\n", playIndex);
+			if (playIndex > FrameIndex - 2)	//Fin de toda la animación con último frame?
+			{
+				printf("Frame index= %d\n", FrameIndex);
+				printf("termino la animacion\n");
+				playIndex = 0;
+				play = false;
+			}
+			else //Interpolación del próximo cuadro
+			{
+
+				i_curr_steps = 0; //Resetea contador
+				//Interpolar
+				interpolation();
+			}
+		}
+		else
+		{
+			//Dibujar Animación
+			movDado8_x += KeyFrame[playIndex].movDado8_xInc;
+			movDado8_y += KeyFrame[playIndex].movDado8_yInc;
+			giroDado8 += KeyFrame[playIndex].giroDado8Inc;
+			i_curr_steps++;
+		}
+	}
+}
+
+///////////////* FIN KEYFRAMES*////////////////////////////
 
 
 
@@ -356,31 +481,14 @@ int main()
 	Letrero.LoadTextureA();
 	tablero = Texture("Textures/monopoly.png");
 	tablero.LoadTextureA();
+	Dado4 = Texture("Textures/dado4.png");
+	Dado4.LoadTextureA();
 
 
 	Kitt_M = Model();
 	Kitt_M.LoadModel("Models/kitt_optimizado.obj");
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/llanta_optimizada.obj");
-	Dragon_M = Model();
-	Dragon_M.LoadModel("Models/17174_Tiamat_new.obj");
-
-	Body_D = Model();
-	Body_D.LoadModel("Models/d_body.obj");
-	Ala_der = Model();
-	Ala_der.LoadModel("Models/ala_der.obj");
-	Ala_izq = Model();
-	Ala_izq.LoadModel("Models/ala_izq.obj");
-	dh1= Model();
-	dh1.LoadModel("Models/cabeza1.obj");
-	dh2 = Model();
-	dh2.LoadModel("Models/cabeza2.obj");
-	dh3 = Model();
-	dh3.LoadModel("Models/cabeza3.obj");
-	dh4 = Model();
-	dh4.LoadModel("Models/cabeza4.obj");
-	dh5 = Model();
-	dh5.LoadModel("Models/cabeza5.obj");
 
 	arco = Model();
 	arco.LoadModel("Models/arco.obj");
@@ -441,12 +549,12 @@ int main()
 
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0, uniformTextureOffset=0;
+		uniformSpecularIntensity = 0, uniformShininess = 0, uniformTextureOffset = 0;
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
-	
+
 	movCoche = 0.0f;
-	movOffset = 0.01f;
+	movOffset = 0.0011f;
 	rotllanta = 0.0f;
 	rotllantaOffset = 10.0f;
 	switch_number = true;
@@ -458,9 +566,46 @@ int main()
 	a_ala2 = 90.0f;
 	avanza = true;
 	rot = 0;
-		 
+	rotDado_8 = 2.5f;
+	rotDado8 = 0.0f;
+	rotDado4 = 0.0f;
+	rotDado_8Offset = 15.0f;
+	avanza = true;
+	baja = true;
+	srand((unsigned)time(NULL));
+	c = 0;
+	c_2 = 0;
+	salto = 0.0f;
+	movDado8 = 10;
+	glm::vec3 posDado8 = glm::vec3(2.0f, 0.0f, 0.0f);
+	movOffsetLet = 0.9f;
+	rotDado_4 = 0.0f;
+	lastRot = 0.0f;
+	lastRot4 = 0.0f;
+	pasosEnTablero = 0;
 
-	
+	////---------PARA TENER KEYFRAMES GUARDADOS NO VOLATILES QUE SIEMPRE SE UTILIZARAN SE DECLARAN AQUÍ
+
+	//KeyFrame[0].movDado8_x = 0.0f;
+	//KeyFrame[0].movDado8_y = 10.0f;
+	//KeyFrame[0].giroDado8 = 0;
+
+
+	//KeyFrame[1].movDado8_x = -1.0f;
+	//KeyFrame[1].movDado8_y = 5.0f;
+	//KeyFrame[1].giroDado8 = 0;
+
+
+	//KeyFrame[2].movDado8_x = -2.0f;
+	//KeyFrame[2].movDado8_y = 0.0f;
+	//KeyFrame[2].giroDado8 = 0;
+
+
+	//KeyFrame[3].movDado8_x = -3.0f;
+	//KeyFrame[3].movDado8_y = -2.0f;
+	//KeyFrame[3].giroDado8 = 0;
+
+
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
@@ -469,63 +614,164 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		angulovaria += 0.5f * deltaTime;
-		posy_d = 10.0f + sin(glm::radians(angulovaria));
+		//activar tirar dados
+		/*if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T)) {
+			salto = 3.5;
+			srand((unsigned)time(NULL));
+			c = (rand() % 5) + 1;
+			srand((unsigned)time(NULL));
+			c_2 = (rand() % 3) + 1;
+			movDado8 = 10;
+			rotDado8 = 0;
+			rotDado_4 = 0;
+			lastRot4 = 0;
+			pasosEnTablero += (c + c_2);
+			printf("avanza: %d\n", pasosEnTablero);
+		}*/
 
-		if (movCoche < 30.0f)
-		{
-			movCoche -= movOffset * deltaTime;
-			//printf("avanza%f \n ",movCoche);
-			rotllanta += rotllantaOffset * deltaTime;
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar) {
+			salto = 3.5;
+			srand((unsigned)time(NULL));
+			c = (rand() % 5) + 1;
+			srand((unsigned)time(NULL));
+			c_2 = (rand() % 3) + 1;
+			movDado8 = 10;
+			rotDado8 = 0;
+			rotDado_4 = 0;
+			lastRot4 = 0;
+			pasosEnTablero += (c + c_2);
+			printf("avanza: %d\n", pasosEnTablero);
+			alternar = false;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) == GLFW_RELEASE) {
+			alternar = true;
 		}
 
-		//despl dragon
-		if (avanza) {
-			if (movDragon > -4)
-			{
-				movDragon -= movDOffset * deltaTime;
+		//logica de dado
+		if (salto > 0) {
+			if (baja) {
+				if (movDado8 > 0.0f) {
+					movDado8 -= movOffsetLet * deltaTime;
+				}
+				else {
+					rotDado_8 += rotDado_8Offset * deltaTime;
+					rotDado_4 += rotDado_8Offset * deltaTime;
+					salto -= 0.5;
+					baja = false;
+				}
 			}
 			else {
-				avanza = false;
-				rot = 180;
+				if (movDado8 <= (salto * 2)) {
+					movDado8 += movOffsetLet * deltaTime;
+				}
+				else {
+					baja = true;
+					salto -= 0.5;
+					rotDado_8 += rotDado_8Offset * deltaTime;
+					rotDado_4 += rotDado_8Offset * deltaTime;
+				}
 			}
 		}
 		else {
-			if (movDragon < 4) {
-				movDragon += movDOffset * deltaTime;
+			if (c ==1 ||c == 2 || c==5 || c== 6) {
+					rotDado_8 = 2.5f;
+					rotDado8 = 50;
+					lastRot = 0;		//cara 2
+					if (c == 6) {
+						lastRot = 90;
+					}
+					if (c == 5) {
+						lastRot = -90;
+					}
+					if (c == 1) {
+						lastRot = 180;
+					}
+
+			}else if (c == 3 || c==4 || c==7 ||c ==8) {
+				rotDado_8 = 4.5f;
+				rotDado8 = 126;
+				lastRot = 0;			//cara 8
+				if (c == 4) {
+					lastRot = 90;
+				}
+				if (c == 3) {
+					lastRot = -90;
+				}
+				if (c == 7) {
+					lastRot = 180;
+				}
+			}
+
+			if (c_2 % 2 == 0) {
+				if (c_2 == 2) {
+					rotDado_4 = 260;
+					lastRot4 = -25;
+				}
+				else if (c_2 == 4) {
+					rotDado_4 = 105;
+					lastRot4 = 27;
+				}
 			}
 			else {
-				avanza = true;
-				rot = 0;
+				if (c_2 == 1) {
+					rotDado_4 = 0;
+					lastRot4 = 0;
+				}
+				else {
+					rotDado_4 = 115;
+					lastRot4 = -90;//cara 8
+				}
 			}
+
 		}
 
-		//mov alas
-		if (posy_d < 9.000001 && down == true) {
-			down = false;
-		}
-		else if (posy_d > 10.9000001 && down == false) {
-			down = true;
-		}
-		if (down && a_ala < 0) {
-			a_ala += 0.0075;
-			a_ala2 -= 0.0075;
-		}
-		else if (!down && a_ala > -90) {
-			a_ala -= 0.0075;
-			a_ala2 += 0.0075;
-		}
+		//angulovaria += 0.5f * deltaTime;
+		//posy_d = 10.0f + sin(glm::radians(angulovaria));
 
-		//e_arq
-		e_z = (e_x + e_y * sin(angulovaria * 0.6f)) * toRadians;
+		//if (movCoche < 30.0f)
+		//{
+		//	movCoche -= movOffset * deltaTime;
+		//	//printf("avanza%f \n ",movCoche);
+		//	rotllanta += rotllantaOffset * deltaTime;
+		//}
 
-		val = (5 * sin(0.3 * angulovaria)) * toRadians;
+		////despl dragon
+		//if (avanza) {
+		//	if (movDragon > -4)
+		//	{
+		//		movDragon -= movDOffset * deltaTime;
+		//	}
+		//	else {
+		//		avanza = false;
+		//		rot = 180;
+		//	}
+		//}
+		//else {
+		//	if (movDragon < 4) {
+		//		movDragon += movDOffset * deltaTime;
+		//	}
+		//	else {
+		//		avanza = true;
+		//		rot = 0;
+		//	}
+		//}
 
-		val_l = (20 * sin(angulovaria) * cos(angulovaria)) * toRadians;
+		////mov alas
+		//if (posy_d < 9.000001 && down == true) {
+		//	down = false;
+		//}
+		//else if (posy_d > 10.9000001 && down == false) {
+		//	down = true;
+		//}
+		//if (down && a_ala < 0) {
+		//	a_ala += 0.0075;
+		//	a_ala2 -= 0.0075;
+		//}
+		//else if (!down && a_ala > -90) {
+		//	a_ala -= 0.0075;
+		//	a_ala2 += 0.0075;
+		//}
 
-		val_c = (3 + sin(angulovaria/2) * 5.0f) * toRadians;
-
-		val_o = (15 * sin(0.01 * angulovaria) * cos(0.01 * angulovaria)) * toRadians;
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -588,14 +834,34 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		tablero.UseTexture();
-		meshList[8]->RenderMesh();
+		meshList[9]->RenderMesh();
 
 		//Instancia del dado de 8 caras 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(20.0f, 10.0f, 20.0f));
-		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		posDado8 = glm::vec3(posXDado8 - salto, movDado8, posZDado8);
+		model = glm::translate(model, posDado8);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
+
+		model = glm::rotate(model, -90 * rotDado_8 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, float(-rotDado8 * toRadians), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, lastRot * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		dado8.RenderModel();
+
+		//Instancia del dado de 4 caras
+		model = glm::mat4(1.0);
+		posDado8 = glm::vec3(posXDado8 +5 + salto, movDado8, posZDado8 - 15);
+		model = glm::translate(model, posDado8);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
+
+		model = glm::rotate(model, -90 * rotDado_8 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, float(rotDado_4 * toRadians), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, lastRot4 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		Dado4.UseTexture();
+		meshList[8]->RenderMesh();
 
 
 		////Instancia del coche 
@@ -748,7 +1014,7 @@ int main()
 		//glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//dh1.RenderModel();
-	
+
 
 		//model = modelaux;
 		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -789,7 +1055,7 @@ int main()
 		//glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//dh5.RenderModel();
-		
+
 
 
 		toffset = glm::vec2(0.0f, 0.0f);
@@ -807,7 +1073,7 @@ int main()
 		AgaveTexture.UseTexture();
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[3]->RenderMesh();
-		
+
 		//textura con movimiento
 		//Importantes porque la variable uniform no podemos modificarla directamente
 		toffsetflechau += 0.001;
@@ -864,7 +1130,7 @@ int main()
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[6]->RenderMesh();
 
-		for (int i = 1; i<4; i++)
+		for (int i = 1; i < 4; i++)
 		{
 			//números 2-4
 			toffsetnumerou += 0.25;
@@ -882,7 +1148,7 @@ int main()
 			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 			meshList[6]->RenderMesh();
 
-		 }
+		}
 
 		for (int j = 1; j < 5; j++)
 		{
@@ -902,13 +1168,13 @@ int main()
 			Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 			meshList[6]->RenderMesh();
 		}
- 
+
 
 		//número cambiante 
 		/*
 		¿Cómo hacer para que sea a una velocidad visible?
 		*/
-		toffsetnumerocambiau += 0.0001; 
+		toffsetnumerocambiau += 0.0001;
 		if (toffsetnumerocambiau > 1.0)
 			toffsetnumerocambiau = 0.0;
 		toffsetnumerov = 0.0;
@@ -948,22 +1214,57 @@ int main()
 		color = glm::vec3(1.0f, 1.0f, 1.0f);
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		//Numero1Texture.UseTexture();
-		
+
 		if (switch_number) {
 			Numero1Texture.UseTexture();
 		}
 		else {
 			Numero2Texture.UseTexture();
 		}
-		
+
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[5]->RenderMesh();
 
 
 
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T))
+		{
+			if (reproduciranimacion < 1)
+			{
+				if (play == false && (FrameIndex > 1))
+				{
+					resetElements();
+					//First Interpolation				
+					interpolation();
+					play = true;
+					playIndex = 0;
+					i_curr_steps = 0;
+					reproduciranimacion++;
+					printf("\n presiona 0 para habilitar reproducir de nuevo la animación'\n");
+					habilitaranimacion = 0;
+
+				}
+				else
+				{
+					play = false;
+
+				}
+			}
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_Y))
+		{
+			if (habilitaranimacion < 1 && reproduciranimacion>0)
+			{
+				printf("Ya puedes reproducir de nuevo la animación con la tecla de barra espaciadora'\n");
+				reproduciranimacion = 0;
+
+			}
+		}
+
+
 		glDisable(GL_BLEND);
-		
-		
+
+
 
 
 
