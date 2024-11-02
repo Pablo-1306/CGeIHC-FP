@@ -55,6 +55,8 @@ Texture TableroTexture;
 //		Declaracion de Modelos		//
 //////////////////////////////////////
 
+//			Personajes				//
+
 Model Cortana;
 Model Inquizidor;
 Model Noble6;
@@ -64,6 +66,12 @@ Model YugiMoto;
 Model DoctorOctopus;
 Model DuendeVerde;
 Model DoctorStrange;
+
+//				Fauna				//
+
+Model Guta;
+Model Yanmee;
+Model Moa;
 
 //////////////////////////////////////
 //////////////////////////////////////
@@ -248,32 +256,36 @@ int main()
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
 
+	//			Personajes				//
+
 	Cortana = Model();
 	Cortana.LoadModel("Models/Personajes/Cortana.obj");
-
 	Inquizidor = Model();
 	Inquizidor.LoadModel("Models/Personajes/Inquizidor.obj");
-
 	Noble6 = Model();
 	Noble6.LoadModel("Models/Personajes/Noble6.obj");
-
 	SetoKaiba = Model();
 	SetoKaiba.LoadModel("Models/Personajes/SetoKaiba.obj");
-
 	Bakura = Model();
 	Bakura.LoadModel("Models/Personajes/Bakura.obj");
-
 	YugiMoto = Model();
 	YugiMoto.LoadModel("Models/Personajes/YugiMoto.obj");
-
 	DoctorOctopus = Model();
 	DoctorOctopus.LoadModel("Models/Personajes/DoctorOctopus.obj");
-
 	DuendeVerde = Model();
 	DuendeVerde.LoadModel("Models/Personajes/DuendeVerde.obj");
-
 	DoctorStrange = Model();
 	DoctorStrange.LoadModel("Models/Personajes/DoctorStrange.obj");
+
+	//				Fauna				//
+
+	Guta = Model();
+	Guta.LoadModel("Models/Fauna/Guta.obj");
+	Yanmee = Model();
+	Yanmee.LoadModel("Models/Fauna/Yanmee.obj");
+	Moa = Model();
+	Moa.LoadModel("Models/Fauna/Moa.obj");
+
 
 	//////////////////////////////////////
 	//////////////////////////////////////
