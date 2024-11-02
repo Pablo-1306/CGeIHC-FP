@@ -28,7 +28,7 @@ Proyecto final
 #include "Model.h"
 #include "Skybox.h"
 
-//para iluminaci髇
+//para iluminaci贸n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -125,7 +125,7 @@ static const char* vShader = "shaders/shader_light.vert";
 static const char* fShader = "shaders/shader_light.frag";
 
 
-//funci髇 de calculo de normales por promedio de v閞tices 
+//funci贸n de calculo de normales por promedio de v茅rtices 
 void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
@@ -213,8 +213,6 @@ void CreateObjects()
 		0.0f, -0.5f, 0.5f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, 0.5f,		1.0f, 1.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, -0.5f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-
-
 	};
 
 	unsigned int dado4Indices[] = {
@@ -307,6 +305,7 @@ int main()
 	Dado4 = Texture("Textures/dado4.png");
 	Dado4.LoadTextureA();
 
+
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
@@ -345,6 +344,8 @@ int main()
 	dado8 = Model();
 	dado8.LoadModel("Models/dado_8.obj");
 
+	Cortana = Model();
+	Cortana.LoadModel("Models/Personajes/Cortana.obj");
 
 	//////////////////////////////////////
 	//////////////////////////////////////
@@ -364,7 +365,7 @@ int main()
 	Material_opaco = Material(0.3f, 4);
 
 
-	//luz direccional, s髄o 1 y siempre debe de existir
+	//luz direccional, s贸lo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		//Intensidad
 		0.3f, 0.3f,
@@ -372,14 +373,14 @@ int main()
 		0.0f, -1.0f, 0.0f);
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//Declaraci髇 de primer luz puntual
+	//Declaraci贸n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
 		0.4f, 1.0f,
 		-6.0f, 1.5f, 1.5f,
 		0.3f, 0.2f, 0.1f);
 	pointLightCount++;
 
-	//Declaraci髇 de luz de mi lampara	
+	//Declaraci贸n de luz de mi lampara	
 	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
 		1.0f, 3.0f,					// Intensidad alta para que se note
 		40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
@@ -393,7 +394,7 @@ int main()
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
-		//Tama駉 cono
+		//Tama锟給 cono
 		20.0f);
 	spotLightCount++;
 
@@ -407,7 +408,7 @@ int main()
 	spotLightCount++;
 
 	//luz Faro
-	spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
+	spotLights[2] = SpotLight(0.0f, 0.0f, 1.0f, //Color Azul
 		1.0f, 2.0f,
 		15.0f, 2.0f, 0.0f,		//Posicion inicial
 		-5.0f, 0.0f, 0.0f,		//Direccion en -X
@@ -416,7 +417,7 @@ int main()
 	spotLightCount++;
 
 	//luz Helicoptero
-	spotLights[3] = SpotLight(0.0f, 0.0f, 0.0f, //Color Amarillo
+	spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
 		1.0f, 2.0f,
 		15.0f, 2.0f, 0.0f,		//Posicion inicial
 		-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
@@ -569,7 +570,7 @@ int main()
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
 
-		//informaci髇 en el shader de intensidad especular y brillo
+		//informaci贸n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -577,13 +578,13 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		// luz ligada a la c醡ara de tipo flash
-		//sirve para que en tiempo de ejecuci髇 (dentro del while) se cambien propiedades de la luz
+		// luz ligada a la c谩mara de tipo flash
+		//sirve para que en tiempo de ejecuci贸n (dentro del while) se cambien propiedades de la luz
 		glm::vec3 lowerLight = camera.getCameraPosition();
 		lowerLight.y -= 0.3f;
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-		//informaci髇 al shader de fuentes de iluminaci髇
+		//informaci贸n al shader de fuentes de iluminaci贸n
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -592,8 +593,8 @@ int main()
 		glm::mat4 modelaux(1.0);
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
-
 		/////// PISO ////////
+
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
@@ -605,6 +606,7 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		meshList[2]->RenderMesh();
+
 
 		///// Tablero ///////
 
@@ -688,6 +690,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Bakura.RenderModel();
 
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(8.5f, 5.0f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -718,6 +721,17 @@ int main()
 
 		//////////////////////////////////////
 		//////////////////////////////////////
+		model = model;
+		model = glm::mat4(1.0);
+
+		// Ajusto posicion
+		model = glm::translate(model, glm::vec3(20, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		// Renderizo
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Cortana.RenderModel();
 
 
 		glUseProgram(0);
