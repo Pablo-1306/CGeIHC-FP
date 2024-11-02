@@ -48,7 +48,8 @@ Texture plainTexture;
 Texture pisoTexture;
 Texture AgaveTexture;
 
-Model Blackhawk_M;
+// Tablero
+Texture TableroTexture;
 
 //////////////////////////////////////
 //		Declaracion de Modelos		//
@@ -145,6 +146,18 @@ void CreateObjects()
 		10.0f, 0.0f, 10.0f,		10.0f, 10.0f,	0.0f, -1.0f, 0.0f
 	};
 
+	unsigned int tableroIndices[] = {
+	0, 2, 1,
+	1, 2, 3
+	};
+
+	GLfloat tableroVertices[] = {
+		-10.0f, 0.0f, -10.0f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, -10.0f,	0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
+		-10.0f, 0.0f, 10.0f,	1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, 10.0f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
+	};
+
 	unsigned int vegetacionIndices[] = {
 	   0, 1, 2,
 	   0, 2, 3,
@@ -179,8 +192,12 @@ void CreateObjects()
 	meshList.push_back(obj3);
 
 	Mesh* obj4 = new Mesh();
-	obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
+	obj4->CreateMesh(tableroVertices, tableroIndices, 32, 6);
 	meshList.push_back(obj4);
+
+	Mesh* obj5 = new Mesh();
+	obj5->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
+	meshList.push_back(obj5);
 
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
@@ -216,11 +233,8 @@ int main()
 	plainTexture.LoadTextureA();
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
-
-	// Modelos
-
-	Blackhawk_M = Model();
-	Blackhawk_M.LoadModel("Models/uh60.obj");
+	TableroTexture = Texture("Textures/Tablero.tga");
+	TableroTexture.LoadTextureA();
 
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
@@ -272,16 +286,16 @@ int main()
 	unsigned int spotLightCount = 0;
 	//linterna
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		0.0f, 2.0f,
+		0.0f, 1.0f,
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		//Tamaño cono
-		5.0f);
+		20.0f);
 	spotLightCount++;
 
 	//luz fija
-	spotLights[1] = SpotLight(1.0f, 0.0f, 0.0f,
+	spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
 		1.0f, 2.0f,
 		5.0f, 10.0f, 0.0f,
 		0.0f, -5.0f, 0.0f,
@@ -290,7 +304,7 @@ int main()
 	spotLightCount++;
 
 	//luz Faro
-	spotLights[2] = SpotLight(0.0f, 0.0f, 1.0f, //Color Azul
+	spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
 		1.0f, 2.0f,
 		15.0f, 2.0f, 0.0f,		//Posicion inicial
 		-5.0f, 0.0f, 0.0f,		//Direccion en -X
@@ -299,7 +313,7 @@ int main()
 	spotLightCount++;
 
 	//luz Helicoptero
-	spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
+	spotLights[3] = SpotLight(0.0f, 0.0f, 0.0f, //Color Amarillo
 		1.0f, 2.0f,
 		15.0f, 2.0f, 0.0f,		//Posicion inicial
 		-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
@@ -359,10 +373,8 @@ int main()
 		glm::mat4 modelaux(1.0);
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
-		//Declaro otra matriz para el helicoptero
-		glm::mat4 modelhel(1.0);
-		//Declaro otra matriz para la lampara
-		glm::mat4 modellamp(1.0);
+
+		/////// PISO ////////
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
@@ -375,39 +387,21 @@ int main()
 
 		meshList[2]->RenderMesh();
 
+		///// Tablero ///////
 
-		// Helicoptero
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.1f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 
-		modelhel = model;
-		modelhel = glm::mat4(1.0);
+		TableroTexture.UseTexture();
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
-		// Movimiento
-		modelhel = glm::translate(modelhel, glm::vec3(0.0f + 0.0f, 0.0f, 0.0));
+		meshList[3]->RenderMesh();
 
-		modelhel = glm::translate(modelhel, glm::vec3(0.0f, 5.0f, 6.0));
-		modelhel = glm::scale(modelhel, glm::vec3(0.3f, 0.3f, 0.3f));
-		modelhel = glm::rotate(modelhel, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelhel = glm::rotate(modelhel, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		////////////////////////////
 
-		// Asigno la posición del helicoptero a la luz para que se mueva con él
-		glm::vec3 PosicionLuz = glm::vec3(modelhel[3]) + glm::vec3(0.0f, 0.0f, 0.0f);
-		spotLights[3].SetPos(PosicionLuz);  // Actualiza la posición de la luz
-
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelhel));
-		Blackhawk_M.RenderModel();
-
-		// Lampara
-		modelhel = model;
-		modellamp = glm::mat4(1.0);
-
-		// Ajusto posicion
-		modellamp = glm::translate(modellamp, glm::vec3(40.0f, 0.0f, 0.0f));
-		modellamp = glm::scale(modellamp, glm::vec3(0.25f, 0.25f, 0.25f));
-		modellamp = glm::rotate(modellamp, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-
-		// Renderizo
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modellamp));
-		Lampara.RenderModel();
 
 
 		model = model;
