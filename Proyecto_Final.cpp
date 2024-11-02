@@ -341,37 +341,9 @@ int main()
 	Moa.LoadModel("Models/Fauna/Moa.obj");
 
 	//               DADO                //
+
 	dado8 = Model();
 	dado8.LoadModel("Models/dado_8.obj");
-
-	Cortana = Model();
-	Cortana.LoadModel("Models/Personajes/Cortana.obj");
-	Inquizidor = Model();
-	Inquizidor.LoadModel("Models/Personajes/Inquizidor.obj");
-	Noble6 = Model();
-	Noble6.LoadModel("Models/Personajes/Noble6.obj");
-	SetoKaiba = Model();
-	SetoKaiba.LoadModel("Models/Personajes/SetoKaiba.obj");
-	Bakura = Model();
-	Bakura.LoadModel("Models/Personajes/Bakura.obj");
-	YugiMoto = Model();
-	YugiMoto.LoadModel("Models/Personajes/YugiMoto.obj");
-	DoctorOctopus = Model();
-	DoctorOctopus.LoadModel("Models/Personajes/DoctorOctopus.obj");
-	DuendeVerde = Model();
-	DuendeVerde.LoadModel("Models/Personajes/DuendeVerde.obj");
-	DoctorStrange = Model();
-	DoctorStrange.LoadModel("Models/Personajes/DoctorStrange.obj");
-
-	//				Fauna				//
-
-	Guta = Model();
-	Guta.LoadModel("Models/Fauna/Guta.obj");
-	Yanmee = Model();
-	Yanmee.LoadModel("Models/Fauna/Yanmee.obj");
-	Moa = Model();
-	Moa.LoadModel("Models/Fauna/Moa.obj");
-
 
 	//////////////////////////////////////
 	//////////////////////////////////////
@@ -625,8 +597,6 @@ int main()
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
-		/////// PISO ////////
-
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
@@ -638,8 +608,6 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		meshList[2]->RenderMesh();
-
-		///// Tablero ///////
 
 		///// Tablero ///////
 
@@ -689,35 +657,35 @@ int main()
 		//			Personajes				//
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Cortana.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(-25.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Inquizidor.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-16.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(-16.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Noble6.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-7.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(-7.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		SetoKaiba.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-0.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(-0.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -725,111 +693,28 @@ int main()
 
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(8.5f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(8.5f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		YugiMoto.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(17.0f, 4.5f, 35.0f));
+		model = glm::translate(model, glm::vec3(17.0f, 2.7f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		DoctorOctopus.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(25.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		DuendeVerde.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DoctorStrange.RenderModel();
-
-		//////////////////////////////////////
-		//////////////////////////////////////
-		model = model;
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.001f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-
-		TableroTexture.UseTexture();
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-
-		meshList[3]->RenderMesh();
-
-		//////////////////////////////////////
-		//		Renderizado de Modelos		//
-		//////////////////////////////////////
-
-		//			Personajes				//
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Cortana.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Inquizidor.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-16.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Noble6.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-7.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		SetoKaiba.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-0.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Bakura.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(8.5f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		YugiMoto.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(17.0f, 4.5f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DoctorOctopus.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DuendeVerde.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 5.0f, 35.0f));
+		model = glm::translate(model, glm::vec3(33.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));

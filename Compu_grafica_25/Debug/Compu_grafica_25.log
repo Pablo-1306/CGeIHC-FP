@@ -1,0 +1,10 @@
+﻿  Proyecto_Final.cpp
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Proyecto_Final.cpp")
+  
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Proyecto_Final.cpp")
+  
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(454,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(456,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Compu_grafica_25.vcxproj -> D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Debug\Compu_grafica_25.exe
