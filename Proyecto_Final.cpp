@@ -222,9 +222,6 @@ int main()
 	Blackhawk_M = Model();
 	Blackhawk_M.LoadModel("Models/uh60.obj");
 
-	Lampara = Model();
-	Lampara.LoadModel("Models/Lampara.obj");
-
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
@@ -385,7 +382,7 @@ int main()
 		modelhel = glm::mat4(1.0);
 
 		// Movimiento
-		modelhel = glm::translate(modelhel, glm::vec3(mainWindow.getmuevex2() + 0.0f, 0.0f, 0.0));
+		modelhel = glm::translate(modelhel, glm::vec3(0.0f + 0.0f, 0.0f, 0.0));
 
 		modelhel = glm::translate(modelhel, glm::vec3(0.0f, 5.0f, 6.0));
 		modelhel = glm::scale(modelhel, glm::vec3(0.3f, 0.3f, 0.3f));
