@@ -36,6 +36,24 @@ Proyecto final
 #include "Material.h"
 const float toRadians = 3.14159265f / 180.0f;
 
+bool alternar;
+int rot = 0;
+float rotDado_8;
+float rotDado8;
+float rotDado_8Offset;
+bool baja;
+int c;
+int c_2;
+float salto;
+float movDado8;
+float movOffsetLet;
+float rotDado4;
+float rotDado_4;
+float lastRot;
+float lastRot4;
+int pasosEnTablero;
+float posXDado8 = -20.0, posYDado8 = 10.0, posZDado8 = 20.0;
+
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
@@ -47,6 +65,8 @@ Texture dirtTexture;
 Texture plainTexture;
 Texture pisoTexture;
 Texture AgaveTexture;
+Texture Dado4;
+Texture Letrero;
 
 // Tablero
 Texture TableroTexture;
@@ -54,6 +74,8 @@ Texture TableroTexture;
 //////////////////////////////////////
 //		Declaracion de Modelos		//
 //////////////////////////////////////
+
+Model dado8;
 
 //			Personajes				//
 
@@ -191,8 +213,31 @@ void CreateObjects()
 		0.0f, -0.5f, 0.5f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, 0.5f,		1.0f, 1.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, -0.5f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
+	};
 
+	unsigned int dado4Indices[] = {
+	   0, 1, 2,
+	   3, 4, 5,
+	   6, 7, 8,
+	   9, 10, 11
+	};
 
+	GLfloat dado4Vertices[] = {
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,		1.0f, 0.0f, -1.0f,
+		//
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,		1.0f, 0.0f, -1.0f,
+		0.0f, 0.0f, -0.5f,		0.065f, 0.86f,			0.0f, 0.0f, 1.0f,
+		//
+		0.0f, 1.0f, 0.0f,		0.486f, 0.86f,		0.0f, -1.0f, 0.0f,
+		0.0f, 0.0f, -0.5f,		0.905f, 0.86f,			0.0f, 0.0f, 1.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		//
+		0.0f, 0.0f, -0.5f,		0.4855f, 0.07f,			0.0f, 0.0f, 1.0f,
+		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
+		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,			0.0f, 0.0f, 1.0f,
 	};
 
 	Mesh* obj1 = new Mesh();
@@ -214,6 +259,10 @@ void CreateObjects()
 	Mesh* obj5 = new Mesh();
 	obj5->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
 	meshList.push_back(obj5);
+
+	Mesh* dado4 = new Mesh();
+	dado4->CreateMesh(dado4Vertices, dado4Indices, 96, 12);
+	meshList.push_back(dado4);
 
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
@@ -239,7 +288,7 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.3f, 0.5f);
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -40.0f, 0.3f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -251,12 +300,49 @@ int main()
 	pisoTexture.LoadTextureA();
 	TableroTexture = Texture("Textures/Tablero.tga");
 	TableroTexture.LoadTextureA();
+	Letrero = Texture("Textures/letrero.tga");
+	Letrero.LoadTextureA();
+	Dado4 = Texture("Textures/dado4.png");
+	Dado4.LoadTextureA();
+
 
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
 
 	//			Personajes				//
+
+	Cortana = Model();
+	Cortana.LoadModel("Models/Personajes/Cortana.obj");
+	Inquizidor = Model();
+	Inquizidor.LoadModel("Models/Personajes/Inquizidor.obj");
+	Noble6 = Model();
+	Noble6.LoadModel("Models/Personajes/Noble6.obj");
+	SetoKaiba = Model();
+	SetoKaiba.LoadModel("Models/Personajes/SetoKaiba.obj");
+	Bakura = Model();
+	Bakura.LoadModel("Models/Personajes/Bakura.obj");
+	YugiMoto = Model();
+	YugiMoto.LoadModel("Models/Personajes/YugiMoto.obj");
+	DoctorOctopus = Model();
+	DoctorOctopus.LoadModel("Models/Personajes/DoctorOctopus.obj");
+	DuendeVerde = Model();
+	DuendeVerde.LoadModel("Models/Personajes/DuendeVerde.obj");
+	DoctorStrange = Model();
+	DoctorStrange.LoadModel("Models/Personajes/DoctorStrange.obj");
+
+	//				Fauna				//
+
+	Guta = Model();
+	Guta.LoadModel("Models/Fauna/Guta.obj");
+	Yanmee = Model();
+	Yanmee.LoadModel("Models/Fauna/Yanmee.obj");
+	Moa = Model();
+	Moa.LoadModel("Models/Fauna/Moa.obj");
+
+	//               DADO                //
+	dado8 = Model();
+	dado8.LoadModel("Models/dado_8.obj");
 
 	Cortana = Model();
 	Cortana.LoadModel("Models/Personajes/Cortana.obj");
@@ -335,6 +421,7 @@ int main()
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		//Tamaño cono
+		//Tama�o cono
 		20.0f);
 	spotLightCount++;
 
@@ -370,13 +457,129 @@ int main()
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0, uniformSpecularIntensity = 0, uniformShininess = 0;
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
+
+	rotDado_8 = 2.5f;
+	rotDado8 = 0.0f;
+	rotDado4 = 0.0f;
+	baja = true;
+	srand((unsigned)time(NULL));
+	c = 0;
+	c_2 = 0;
+	salto = 0.0f;
+	movDado8 = 10;
+	glm::vec3 posDado8 = glm::vec3(2.0f, 0.0f, 0.0f);
+	movOffsetLet = 0.9f;
+	rotDado_4 = 0.0f;
+	lastRot = 0.0f;
+	lastRot4 = 0.0f;
+	pasosEnTablero = 0;
+
+
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
+
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar) {
+			salto = 3.5;
+			srand((unsigned)time(NULL));
+			c = (rand() % 5) + 1;
+			srand((unsigned)time(NULL));
+			c_2 = (rand() % 3) + 1;
+			movDado8 = 10;
+			rotDado8 = 0;
+			rotDado_4 = 0;
+			lastRot4 = 0;
+			pasosEnTablero += (c + c_2);
+			printf("avanza: %d\n", pasosEnTablero);
+			alternar = false;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) == GLFW_RELEASE) {
+			alternar = true;
+		}
+
+		//logica de dado
+		if (salto > 0) {
+			if (baja) {
+				if (movDado8 > 0.0f) {
+					movDado8 -= movOffsetLet * deltaTime;
+				}
+				else {
+					rotDado_8 += rotDado_8Offset * deltaTime;
+					rotDado_4 += rotDado_8Offset * deltaTime;
+					salto -= 0.5;
+					baja = false;
+				}
+			}
+			else {
+				if (movDado8 <= (salto * 2)) {
+					movDado8 += movOffsetLet * deltaTime;
+				}
+				else {
+					baja = true;
+					salto -= 0.5;
+					rotDado_8 += rotDado_8Offset * deltaTime;
+					rotDado_4 += rotDado_8Offset * deltaTime;
+				}
+			}
+		}
+		else {
+			if (c == 1 || c == 2 || c == 5 || c == 6) {
+				rotDado_8 = 2.5f;
+				rotDado8 = 50;
+				lastRot = 0;		//cara 2
+				if (c == 6) {
+					lastRot = 90;
+				}
+				if (c == 5) {
+					lastRot = -90;
+				}
+				if (c == 1) {
+					lastRot = 180;
+				}
+
+			}
+			else if (c == 3 || c == 4 || c == 7 || c == 8) {
+				rotDado_8 = 4.5f;
+				rotDado8 = 126;
+				lastRot = 0;			//cara 8
+				if (c == 4) {
+					lastRot = 90;
+				}
+				if (c == 3) {
+					lastRot = -90;
+				}
+				if (c == 7) {
+					lastRot = 180;
+				}
+			}
+
+			if (c_2 % 2 == 0) {
+				if (c_2 == 2) {
+					rotDado_4 = 260;
+					lastRot4 = -25;
+				}
+				else if (c_2 == 4) {
+					rotDado_4 = 105;
+					lastRot4 = 27;
+				}
+			}
+			else {
+				if (c_2 == 1) {
+					rotDado_4 = 0;
+					lastRot4 = 0;
+				}
+				else {
+					rotDado_4 = 115;
+					lastRot4 = -90;
+				}
+			}
+
+		}
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -422,6 +625,11 @@ int main()
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+		/////// PISO ////////
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
@@ -433,6 +641,120 @@ int main()
 
 		///// Tablero ///////
 
+		///// Tablero ///////
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -1.8f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+
+		TableroTexture.UseTexture();
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+
+		meshList[3]->RenderMesh();
+
+
+		//Instancia del dado de 8 caras 
+		model = glm::mat4(1.0);
+		posDado8 = glm::vec3(posXDado8 - salto, movDado8, posZDado8);
+		model = glm::translate(model, posDado8);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
+
+		model = glm::rotate(model, -90 * rotDado_8 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, float(-rotDado8 * toRadians), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, lastRot * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		dado8.RenderModel();
+
+		//Instancia del dado de 4 caras
+		model = glm::mat4(1.0);
+		posDado8 = glm::vec3(posXDado8 + 5 + salto, movDado8, posZDado8 - 15);
+		model = glm::translate(model, posDado8);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
+
+		model = glm::rotate(model, -90 * rotDado_8 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, float(rotDado_4 * toRadians), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, lastRot4 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		Dado4.UseTexture();
+		meshList[5]->RenderMesh();
+
+		//////////////////////////////////////
+		//		Renderizado de Modelos		//
+		//////////////////////////////////////
+
+		//			Personajes				//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Cortana.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-25.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Inquizidor.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-16.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Noble6.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-7.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		SetoKaiba.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-0.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Bakura.RenderModel();
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(8.5f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		YugiMoto.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(17.0f, 4.5f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		DoctorOctopus.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		DuendeVerde.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(33.0f, 5.0f, 35.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		DoctorStrange.RenderModel();
+
+		//////////////////////////////////////
+		//////////////////////////////////////
+		model = model;
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.001f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
