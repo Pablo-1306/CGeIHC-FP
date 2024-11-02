@@ -1,7 +1,5 @@
 #include "PointLight.h"
 
-
-
 PointLight::PointLight() : Light()
 {
 	position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -35,6 +33,11 @@ void PointLight::UseLight(GLfloat ambientIntensityLocation, GLfloat ambientcolor
 	glUniform1f(exponentLocation, exponent);
 }
 
+void PointLight::setColor(GLfloat red, GLfloat green, GLfloat blue) {
+	color = glm::vec3(red, green, blue);
+}
+
 PointLight::~PointLight()
 {
 }
+
