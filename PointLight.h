@@ -1,8 +1,7 @@
 #pragma once
 #include "Light.h"
 
-class PointLight :
-	public Light
+class PointLight : public Light
 {
 public:
 	PointLight();
@@ -15,11 +14,11 @@ public:
 		GLfloat diffuseIntensityLocation, GLfloat positionLocation,
 		GLfloat constantLocation, GLfloat linearLocation, GLfloat exponentLocation);
 
+	void setColor(GLfloat red, GLfloat green, GLfloat blue);
+
 	~PointLight();
 
 protected:
 	glm::vec3 position;
-
 	GLfloat constant, linear, exponent;
 };
-
