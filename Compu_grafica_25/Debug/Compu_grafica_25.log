@@ -5,13 +5,10 @@ C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Window.h(12
 C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   (compilando archivo de origen "Proyecto_Final.cpp")
   
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(610,24): warning C4305: '+=': truncamiento de 'double' a 'float'
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(613,26): warning C4305: '-=': truncamiento de 'double' a 'float'
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(616,26): warning C4305: '+=': truncamiento de 'double' a 'float'
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(624,24): warning C4305: '-=': truncamiento de 'double' a 'float'
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(631,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(633,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(647,13): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(738,34): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(739,16): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(647,24): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(649,26): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(652,26): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(660,24): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(667,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(669,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
   Compu_grafica_25.vcxproj -> C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Debug\Compu_grafica_25.exe
