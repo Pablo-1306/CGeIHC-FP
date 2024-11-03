@@ -1,6 +1,10 @@
-/*
-Proyecto final
-*/
+///*
+//Proyecto Final de Computación Gráfica e Interacción Humano Computadora
+//
+//Hernandez Solis Brandon
+//Reyes Arroyo Pablo Antonio
+//
+//*/
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -53,6 +57,11 @@ float lastRot;
 float lastRot4;
 int pasosEnTablero;
 float posXDado8 = -20.0, posYDado8 = 10.0, posZDado8 = 20.0;
+bool finaliza;
+bool avanza;
+int posxPersonaje = -45, poszPersonaje = 45 ;
+float suma;
+bool v1 = false, v2 = false, v3 = true;
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -88,6 +97,7 @@ Model YugiMoto;
 Model DoctorOctopus;
 Model DuendeVerde;
 Model DoctorStrange;
+Model Spiderman;
 
 //				Fauna				//
 
@@ -321,7 +331,8 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -40.0f, 0.3f, 0.5f);
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -50.0f, 0.3f, 0.5f);
+	glfwPollEvents();
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -363,6 +374,8 @@ int main()
 	DuendeVerde.LoadModel("Models/Personajes/DuendeVerde.obj");
 	DoctorStrange = Model();
 	DoctorStrange.LoadModel("Models/Personajes/DoctorStrange.obj");
+	Spiderman = Model();
+	Spiderman.LoadModel("Models/Personajes/Spiderman.obj");
 
 	//				Fauna				//
 
@@ -438,6 +451,7 @@ int main()
 	dado8 = Model();
 	dado8.LoadModel("Models/dado_8.obj");
 
+
 	//////////////////////////////////////
 	//////////////////////////////////////
 
@@ -459,63 +473,63 @@ int main()
 	//luz direccional, sólo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		//Intensidad
-		0.3f, 0.3f,
+		0.5f, 0.5f,
 		//Direccion de la luz
-		0.0f, -1.0f, 0.0f);
+		0.0f, 0.0f, -1.0f);
+
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-		0.4f, 1.0f,
-		-6.0f, 1.5f, 1.5f,
-		0.3f, 0.2f, 0.1f);
-	pointLightCount++;
+	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
+	//	0.4f, 1.0f,
+	//	-6.0f, 1.5f, 1.5f,
+	//	0.3f, 0.2f, 0.1f);
+	//pointLightCount++;
 
-	//Declaración de luz de mi lampara	
-	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
-		1.0f, 3.0f,					// Intensidad alta para que se note
-		40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
-		0.1f, 0.1f, 0.02f);			// Atenuacion
-	pointLightCount++;
+	////Declaración de luz de mi lampara	
+	//pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
+	//	1.0f, 3.0f,					// Intensidad alta para que se note
+	//	40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
+	//	0.1f, 0.1f, 0.02f);			// Atenuacion
+	//pointLightCount++;
 
 	unsigned int spotLightCount = 0;
-	//linterna
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		//Tamaño cono
-		//Tama�o cono
-		20.0f);
-	spotLightCount++;
+	////linterna
+	//spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+	//	0.0f, 1.0f,
+	//	0.0f, 0.0f, 0.0f,
+	//	0.0f, -1.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	//Tama�o cono
+	//	20.0f);
+	//spotLightCount++;
 
-	//luz fija
-	spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
-		1.0f, 2.0f,
-		5.0f, 10.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		15.0f);
-	spotLightCount++;
+	////luz fija
+	//spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
+	//	1.0f, 2.0f,
+	//	5.0f, 10.0f, 0.0f,
+	//	0.0f, -5.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	15.0f);
+	//spotLightCount++;
 
-	//luz Faro
-	spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-5.0f, 0.0f, 0.0f,		//Direccion en -X
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Faro
+	//spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-5.0f, 0.0f, 0.0f,		//Direccion en -X
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
-	//luz Helicoptero
-	spotLights[3] = SpotLight(0.0f, 0.0f, 0.0f, //Color Amarillo
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Helicoptero
+	//spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
 	//se crean mas luces puntuales y spotlight 
 
@@ -538,18 +552,54 @@ int main()
 	lastRot = 0.0f;
 	lastRot4 = 0.0f;
 	pasosEnTablero = 0;
+	avanza = false;
+	finaliza = true;
+	suma = 0;
+	v1 = false;
+	v2 = v1;
+	v3 = true;
 
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+		glfwPollEvents();
+		//CAMBIO DE CAMARAS//
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_1)) {
+			camera = Camera(glm::vec3(posxPersonaje, 7.0f, poszPersonaje + 15), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.3f, 0.5f);
+			v1 = true;
+			v2 = false;
+			v3 = v2;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_2)) {
+			camera = Camera(glm::vec3(0.0f, 100.0f, 00.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, -90.0f, 0.3f, 0.5f);
+			v2 = true;
+			v1 = false;
+			v3 = v1;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_3)) {
+			camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, -45.0f, 0.3f, 0.5f);
+			v3 = true;
+			v1 = false;
+			v2 = v1;
+		}
+
+		if (v1) {
+			//Recibir eventos del usuario
+			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else if (v2) {
+			//Recibir eventos del usuario
+			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+		}
+
 
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true) {
 			salto = 3.5;
 			srand((unsigned)time(NULL));
 			c = (rand() % 5) + 1;
@@ -560,6 +610,7 @@ int main()
 			rotDado_4 = 0;
 			lastRot4 = 0;
 			pasosEnTablero += (c + c_2);
+			suma = c + c_2;
 			printf("avanza: %d\n", pasosEnTablero);
 			alternar = false;
 		}
@@ -569,6 +620,7 @@ int main()
 
 		//logica de dado
 		if (salto > 0) {
+			finaliza = false;
 			if (baja) {
 				if (movDado8 > 0.0f) {
 					movDado8 -= movOffsetLet * deltaTime;
@@ -593,6 +645,8 @@ int main()
 			}
 		}
 		else {
+			finaliza = true;
+			avanza = true;
 			if (c == 1 || c == 2 || c == 5 || c == 6) {
 				rotDado_8 = 2.5f;
 				rotDado8 = 50;
@@ -643,13 +697,14 @@ int main()
 					lastRot4 = -90;
 				}
 			}
-
 		}
 
-		//Recibir eventos del usuario
-		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+
+		if (pasosEnTablero < 10 && finaliza && avanza && suma > 0) {
+			poszPersonaje = poszPersonaje - 0.01;
+			suma -= (0.6*(c+c_2));
+		}
+
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -750,7 +805,15 @@ int main()
 		//			Personajes				//
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, 35.0f));
+		model = glm::translate(model, glm::vec3(posxPersonaje, 0.0f,poszPersonaje));
+		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Spiderman.RenderModel();
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
