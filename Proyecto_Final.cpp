@@ -62,6 +62,8 @@ bool avanza;
 int posxPersonaje = -45, poszPersonaje = 45 ;
 float suma;
 bool v1 = false, v2 = false, v3 = true;
+float despl_solx = 0.0f, despl_soly = 0.0f, despl_solz = -1.0f;
+bool dia;
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -79,6 +81,7 @@ Texture Letrero;
 
 // Tablero
 Texture TableroTexture;
+Texture TableroNoche;
 
 //////////////////////////////////////
 //		Declaracion de Modelos		//
@@ -344,6 +347,8 @@ int main()
 	pisoTexture.LoadTextureA();
 	TableroTexture = Texture("Textures/Tablero.tga");
 	TableroTexture.LoadTextureA();
+	TableroNoche= Texture("Textures/TableroNoche.tga");
+	TableroNoche.LoadTextureA();
 	Letrero = Texture("Textures/letrero.tga");
 	Letrero.LoadTextureA();
 	Dado4 = Texture("Textures/dado4.png");
@@ -470,12 +475,12 @@ int main()
 	Material_opaco = Material(0.3f, 4);
 
 
-	//luz direccional, sólo 1 y siempre debe de existir
-	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		//Intensidad
-		0.5f, 0.5f,
-		//Direccion de la luz
-		0.0f, 0.0f, -1.0f);
+	////luz direccional, sólo 1 y siempre debe de existir
+	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+	//	//Intensidad
+	//	0.5f, 0.5f,
+	//	//Direccion de la luz
+	//	despl_solx, despl_soly, despl_solz);
 
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
@@ -558,11 +563,19 @@ int main()
 	v1 = false;
 	v2 = v1;
 	v3 = true;
+	dia = true;
 
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+		//luz direccional, sólo 1 y siempre debe de existir
+		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+			//Intensidad
+			0.5f, 0.5f,
+			//Direccion de la luz
+			despl_solx, despl_soly, despl_solz);
+
 		glfwPollEvents();
 		//CAMBIO DE CAMARAS//
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_1)) {
@@ -591,6 +604,26 @@ int main()
 		else if (v2) {
 			//Recibir eventos del usuario
 			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+		}
+
+		if (despl_solz < 1 && dia) {
+			despl_solz += 0.0003;
+			if (despl_solz > -0.7 && despl_solz < 0 && despl_soly > -1) {
+				despl_soly -= 0.00002;
+			}
+			else if(despl_solz >= -0.000477 && despl_solz < 0.7) {
+				despl_soly += 0.00002;
+			}
+			else if(despl_solz > 0.7 || despl_solz > -0.7){
+				despl_soly = 0;
+			}
+		}
+		else if(despl_solz > -1.1){
+			dia = false;
+			despl_solz -= 0.0003;
+		}
+		else {
+			dia = true;
 		}
 
 
@@ -764,8 +797,12 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-
-		TableroTexture.UseTexture();
+		if (dia) {
+			TableroTexture.UseTexture();
+		}
+		else {
+			TableroNoche.UseTexture();
+		}
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		meshList[3]->RenderMesh();
