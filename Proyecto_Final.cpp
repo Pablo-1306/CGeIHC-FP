@@ -9,6 +9,7 @@ Proyecto final
 #include <cmath>
 #include <vector>
 #include <math.h>
+#include <cmath>
 
 #include <glew.h>
 #include <glfw3.h>
@@ -54,6 +55,10 @@ float lastRot4;
 int pasosEnTablero;
 float posXDado8 = -20.0, posYDado8 = 10.0, posZDado8 = 20.0;
 
+// Control del tablero //
+int estado;
+
+
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
@@ -68,6 +73,20 @@ Texture AgaveTexture;
 Texture Dado4;
 Texture Letrero;
 
+Model Helicopero;
+float movX;
+float movZ;
+float offsetMovHel;
+
+float rotY;
+float offsetRotHel;
+
+int estado2;
+float avance;
+float rotObjetivo;
+
+bool Personaje;
+
 // Tablero
 Texture TableroTexture;
 
@@ -76,6 +95,8 @@ Texture TableroTexture;
 //////////////////////////////////////
 
 Model dado8;
+Model Jefe;
+Model Spiderman;
 
 //			Personajes				//
 
@@ -130,9 +151,6 @@ Model Universidad;
 
 //////////////////////////////////////
 //////////////////////////////////////
-
-// Lampara
-Model Lampara;
 
 Skybox skybox;
 
@@ -339,9 +357,19 @@ int main()
 	Dado4.LoadTextureA();
 
 
+	Helicopero = Model();
+	Helicopero.LoadModel("Models/MRX22 Recon Flyer.obj");
+
+
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
+
+	Jefe = Model();
+	Jefe.LoadModel("Models/Jefe.obj");
+
+	Spiderman = Model();
+	Spiderman.LoadModel("Models/Spiderman.obj");
 
 	//			Personajes				//
 
@@ -539,6 +567,22 @@ int main()
 	lastRot4 = 0.0f;
 	pasosEnTablero = 0;
 
+	// Tablero
+	estado = 0;
+
+	movX = 0.0f;
+	movZ = 0.0f;
+	offsetMovHel = 0.5f;
+
+	rotY = 0.0f;
+	offsetRotHel = 0.5f;
+
+	estado2 = 0;
+	rotObjetivo = 0;
+	avance = 0;
+
+	Personaje = true;
+
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -559,9 +603,26 @@ int main()
 			rotDado8 = 0;
 			rotDado_4 = 0;
 			lastRot4 = 0;
-			pasosEnTablero += (c + c_2);
-			printf("avanza: %d\n", pasosEnTablero);
+			pasosEnTablero = (c + c_2);
+			printf("Avanza: %d\n", pasosEnTablero);
 			alternar = false;
+
+			//////////////////////////////////////
+			//		Control del Tablero			//
+			//////////////////////////////////////
+
+			estado += (c + c_2);
+
+			// Verifica si ha alcanzado o superado las 40 casillas
+			if (estado >= 40) {
+				estado = estado % 40;  // Reinicia el contador al rango 0-39
+				Personaje = !Personaje;  // Alterna el booleano solo cuando se completa un ciclo
+			}
+
+			
+
+			printf("Casilla: %d\n", estado);
+
 		}
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) == GLFW_RELEASE) {
 			alternar = true;
@@ -645,6 +706,13 @@ int main()
 			}
 
 		}
+
+		
+
+
+
+		//////////////////////////////////////
+		//////////////////////////////////////
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -754,63 +822,81 @@ int main()
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Cortana.RenderModel();
+		if (estado == 39) {
+			Cortana.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-25.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Inquizidor.RenderModel();
+		if (estado == 38) {
+			Inquizidor.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-16.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Noble6.RenderModel();
+		if (estado == 37) {
+			Noble6.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-7.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		SetoKaiba.RenderModel();
+		if (estado == 36) {
+			SetoKaiba.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-0.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Bakura.RenderModel();
+		if (estado == 35) {
+			Bakura.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(8.5f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		YugiMoto.RenderModel();
+		if (estado == 34) {
+			YugiMoto.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(17.0f, 2.7f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DoctorOctopus.RenderModel();
+		if (estado == 33) {
+			DoctorOctopus.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DuendeVerde.RenderModel();
+		if (estado == 32) {
+			DuendeVerde.RenderModel();
+		}	
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 3.2f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DoctorStrange.RenderModel();
+		if (estado == 31) {
+			DoctorStrange.RenderModel();
+		}
 
 		//				Fauna				//
 
@@ -819,70 +905,91 @@ int main()
 		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Guta.RenderModel();
+		if (estado == 30) {
+			Guta.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(35.0f, 3.2f, 33.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Yanmee.RenderModel();
+		if (estado == 29) {
+			Yanmee.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(35.0f, 3.2f, 25.0f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Moa.RenderModel();
+		if (estado == 28) {
+			Moa.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 1.0f, 17.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Rana.RenderModel();
+		if (estado == 27) {
+			Rana.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 2.0f, 8.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Perro.RenderModel();
+		if (estado == 26) {
+			Perro.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 3.1f, 0.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Pinguino.RenderModel();
+		if (estado == 25) {
+			Pinguino.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 1.9f, -7.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Gato.RenderModel();
+		if (estado == 24) {
+			Gato.RenderModel();
+		}
+
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(35.0f, -1.0f, -16.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Lagarto.RenderModel();
+		if (estado == 23) {
+			Lagarto.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(35.0f, 2.1f, -24.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Paloma.RenderModel();
+		if (estado == 22) {
+			Paloma.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(35.0f, 0.0f, -33.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Arana.RenderModel();
+		if (estado == 21) {
+			Arana.RenderModel();
+		}
 
 		//				Flora				//
 
@@ -891,70 +998,90 @@ int main()
 		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Seta.RenderModel();
+		if (estado == 20) {
+			Seta.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		RobleRojo.RenderModel();
+		if (estado == 11) {
+			RobleRojo.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-25.0f, 1.6f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Cerezo.RenderModel();
-
+		if (estado == 12) {
+			Cerezo.RenderModel();
+		}
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-16.0f, 1.6f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Rododendro.RenderModel();
-
+		if (estado == 13) {
+			Rododendro.RenderModel();
+		}
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-8.0f, -0.9f, -32.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		JardinRosas.RenderModel();
+		if (estado == 14) {
+			JardinRosas.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-0.0f, -0.4f, -32.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Bosque.RenderModel();
+		if (estado == 15) {
+			Bosque.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(8.5f, 2.7f, -33.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Islas.RenderModel();
+		if (estado == 16) {
+			Islas.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(17.0f, 3.2f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		KibaTorcido.RenderModel();
+		if (estado == 17) {
+			KibaTorcido.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.0f, 3.2f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		RobleReach.RenderModel();
+		if (estado == 18) {
+			RobleReach.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(33.0f, 1.5f, -35.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Xenoflora.RenderModel();
+		if (estado == 19) {
+			Xenoflora.RenderModel();
+		}
 
 		//			Edificios				//
 
@@ -963,73 +1090,296 @@ int main()
 		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Anillo.RenderModel();
+		if (estado == 10) {
+			Anillo.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-35.0f, -0.8f, 33.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Puente.RenderModel();
-
+		if (estado == 1) {
+			Puente.RenderModel();
+		}
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-35.0f, 3.2f, 25.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Estatua.RenderModel();
+		if (estado == 2) {
+			Estatua.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-31.0f, 2.1f, 17.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Universidad.RenderModel();
+		if (estado == 3){
+			Universidad.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-33.0f, 2.0f, 8.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Cafeteria.RenderModel();
+		if (estado == 4) {
+			Cafeteria.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-32.0f, 3.2f, 0.5f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Corporation.RenderModel();
+		if (estado == 5) {
+			Corporation.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-32.0f, 0.9f, -8.5f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Kingdom.RenderModel();
+		if (estado == 6) {
+			Kingdom.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-35.0f, 3.2f, -16.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Instituto.RenderModel();
+		if (estado == 7) {
+			Instituto.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, -25.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		GranCaridad.RenderModel();
+		if (estado == 8) {
+			GranCaridad.RenderModel();
+		}
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-33.0f, -1.05f, -33.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Arca.RenderModel();
+		if (estado == 9) {
+			Arca.RenderModel();
+		}
 
 		//////////////////////////////////////
 		//////////////////////////////////////
+
+		//	Modelos
+
+		// Halo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 3.2f, 0.0f));
+		model = glm::translate(model, glm::vec3(movX, 0.0f, movZ));
+		model = glm::rotate(model, rotY * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		if (Personaje) {
+			Jefe.RenderModel();
+		}
+		
+		// Spiderman
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 3.2f, 0.0f));
+		model = glm::translate(model, glm::vec3(movX, 0.0f, movZ));
+		model = glm::rotate(model, rotY * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		if (!Personaje) {
+			Spiderman.RenderModel();
+		}
+
+		//////////////////////////////////////
+		//		Control del Tablero			//
+		//////////////////////////////////////
+
+		if (estado >= 0 && estado < 10) {
+			rotY = -180.0f;
+			if (estado == 0) {
+				movX = -45.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 1) {
+				movX = -45.0f;
+				movZ = 33.0f;
+			}
+			if (estado == 2) {
+				movX = -45.0f;
+				movZ = 25.0f;
+			}
+			if (estado == 3) {
+				movX = -45.0f;
+				movZ = 17.0f;
+			}
+			if (estado == 4) {
+				movX = -45.0f;
+				movZ = 8.0f;
+			}
+			if (estado == 5) {
+				movX = -45.0f;
+				movZ = 0;
+			}
+			if (estado == 6) {
+				movX = -45.0f;
+				movZ = -8.0f;
+			}
+			if (estado == 7) {
+				movX = -45.0f;
+				movZ = -17.0f;
+			}
+			if (estado == 8) {
+				movX = -45.0f;
+				movZ = -25.0f;
+			}
+			if (estado == 9) {
+				movX = -45.0f;
+				movZ = -33.0f;
+			}
+		}
+		if (estado >= 10 && estado < 20) {
+			rotY = -270.0f;
+			if (estado == 10) {
+				movX = -45.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 11) {
+				movX = -33.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 12) {
+				movX = -25.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 13) {
+				movX = -17.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 14) {
+				movX = -8.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 15) {
+				movX = 0.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 16) {
+				movX = 8.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 17) {
+				movX = 17.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 18) {
+				movX = 25.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 19) {
+				movX = 33.0f;
+				movZ = -45.0f;
+			}
+		}
+		if (estado >= 20 && estado < 30) {
+			rotY = 0.0f;
+			if (estado == 20) {
+				movX = 45.0f;
+				movZ = -45.0f;
+			}
+			if (estado == 21) {
+				movX = 45.0f;
+				movZ = -33.0f;
+			}
+			if (estado == 22) {
+				movX = 45.0f;
+				movZ = -25.0f;
+			}
+			if (estado == 23) {
+				movX = 45.0f;
+				movZ = -17.0f;
+			}
+			if (estado == 24) {
+				movX = 45.0f;
+				movZ = -8.0f;
+			}
+			if (estado == 25) {
+				movX = 45.0f;
+				movZ = 0.0f;
+			}
+			if (estado == 26) {
+				movX = 45.0f;
+				movZ = 8.0f;
+			}
+			if (estado == 27) {
+				movX = 45.0f;
+				movZ = 17.0f;
+			}
+			if (estado == 28) {
+				movX = 45.0f;
+				movZ = 25.0f;
+			}
+			if (estado == 29) {
+				movX = 45.0f;
+				movZ = 33.0f;
+			}
+		}
+		if (estado >= 30 && estado < 40) {
+			rotY = -90.0f;
+			if (estado == 30) {
+				movX = 45.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 31) {
+				movX = 33.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 32) {
+				movX = 25.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 33) {
+				movX = 17.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 34) {
+				movX = 8.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 35) {
+				movX = 0.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 36) {
+				movX = -8.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 37) {
+				movX = -17.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 38) {
+				movX = -25.0f;
+				movZ = 45.0f;
+			}
+			if (estado == 39) {
+				movX = -33.0f;
+				movZ = 45.0f;
+			}
+		}
 
 
 		glUseProgram(0);
