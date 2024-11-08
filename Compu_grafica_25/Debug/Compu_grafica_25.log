@@ -1,11 +1,14 @@
 ﻿  Proyecto_Final.cpp
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   (compilando archivo de origen "Proyecto_Final.cpp")
   
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   (compilando archivo de origen "Proyecto_Final.cpp")
   
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(591,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(593,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-  Compu_grafica_25.vcxproj -> D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Debug\Compu_grafica_25.exe
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(647,24): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(649,26): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(652,26): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(660,24): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(667,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp(669,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Compu_grafica_25.vcxproj -> C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Debug\Compu_grafica_25.exe

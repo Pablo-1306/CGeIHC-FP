@@ -55,6 +55,13 @@ float lastRot;
 float lastRot4;
 int pasosEnTablero;
 float posXDado8 = -20.0, posYDado8 = 10.0, posZDado8 = 20.0;
+bool finaliza;
+bool avanza;
+int posxPersonaje = -45, poszPersonaje = 45 ;
+float suma;
+bool v1 = false, v2 = false, v3 = true;
+float despl_solx = 0.0f, despl_soly = 0.0f, despl_solz = -1.0f;
+bool dia;
 
 // Control del tablero //
 int estado;
@@ -90,6 +97,7 @@ bool Personaje;
 
 // Tablero
 Texture TableroTexture;
+Texture TableroNoche;
 
 //////////////////////////////////////
 //		Declaracion de Modelos		//
@@ -352,6 +360,8 @@ int main()
 	pisoTexture.LoadTextureA();
 	TableroTexture = Texture("Textures/Tablero.tga");
 	TableroTexture.LoadTextureA();
+	TableroNoche= Texture("Textures/TableroNoche.tga");
+	TableroNoche.LoadTextureA();
 	Letrero = Texture("Textures/letrero.tga");
 	Letrero.LoadTextureA();
 	Dado4 = Texture("Textures/dado4.png");
@@ -485,12 +495,13 @@ int main()
 	Material_opaco = Material(0.3f, 4);
 
 
-	//luz direccional, sólo 1 y siempre debe de existir
-	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		//Intensidad
-		0.3f, 0.3f,
-		//Direccion de la luz
-		0.0f, -1.0f, 0.0f);
+	////luz direccional, sólo 1 y siempre debe de existir
+	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+	//	//Intensidad
+	//	0.5f, 0.5f,
+	//	//Direccion de la luz
+	//	despl_solx, despl_soly, despl_solz);
+
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
@@ -567,6 +578,13 @@ int main()
 	lastRot = 0.0f;
 	lastRot4 = 0.0f;
 	pasosEnTablero = 0;
+	avanza = false;
+	finaliza = true;
+	suma = 0;
+	v1 = false;
+	v2 = v1;
+	v3 = true;
+	dia = true;
 
 	// Tablero
 	estado = 0;
@@ -588,6 +606,63 @@ int main()
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+		//luz direccional, sólo 1 y siempre debe de existir
+		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+			//Intensidad
+			0.5f, 0.5f,
+			//Direccion de la luz
+			despl_solx, despl_soly, despl_solz);
+
+		glfwPollEvents();
+		//CAMBIO DE CAMARAS//
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_1)) {
+			camera = Camera(glm::vec3(posxPersonaje, 7.0f, poszPersonaje + 15), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.3f, 0.5f);
+			v1 = true;
+			v2 = false;
+			v3 = v2;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_2)) {
+			camera = Camera(glm::vec3(0.0f, 100.0f, 00.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, -90.0f, 0.3f, 0.5f);
+			v2 = true;
+			v1 = false;
+			v3 = v1;
+		}
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_3)) {
+			camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, -45.0f, 0.3f, 0.5f);
+			v3 = true;
+			v1 = false;
+			v2 = v1;
+		}
+
+		if (v1) {
+			//Recibir eventos del usuario
+			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else if (v2) {
+			//Recibir eventos del usuario
+			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+		}
+
+		if (despl_solz < 1 && dia) {
+			despl_solz += 0.0003;
+			if (despl_solz > -0.7 && despl_solz < 0 && despl_soly > -1) {
+				despl_soly -= 0.00002;
+			}
+			else if(despl_solz >= -0.000477 && despl_solz < 0.7) {
+				despl_soly += 0.00002;
+			}
+			else if(despl_solz > 0.7 || despl_solz > -0.7){
+				despl_soly = 0;
+			}
+		}
+		else if(despl_solz > -1.1){
+			dia = false;
+			despl_solz -= 0.0003;
+		}
+		else {
+			dia = true;
+		}
+
 
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
@@ -715,10 +790,6 @@ int main()
 		//////////////////////////////////////
 		//////////////////////////////////////
 
-		//Recibir eventos del usuario
-		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -778,8 +849,12 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-
-		TableroTexture.UseTexture();
+		if (dia) {
+			TableroTexture.UseTexture();
+		}
+		else {
+			TableroNoche.UseTexture();
+		}
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		meshList[3]->RenderMesh();
