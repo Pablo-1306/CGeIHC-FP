@@ -1,0 +1,19 @@
+KeyFrame[5].movAvion_x = -30.0f;
+KeyFrame[5].movAvion_y = 5.0f;
+KeyFrame[5].giroAvion = 270.0f;
+
+KeyFrame[6].movAvion_x = -15.0f;
+KeyFrame[6].movAvion_y = 5.0f;
+KeyFrame[6].giroAvion = 270.0f;
+
+KeyFrame[7].movAvion_x = -15.0f;
+KeyFrame[7].movAvion_y = 10.0f;
+KeyFrame[7].giroAvion = 270.0f;
+
+KeyFrame[8].movAvion_x = -10.0f;
+KeyFrame[8].movAvion_y = 10.0f;
+KeyFrame[8].giroAvion = 270.0f;
+
+KeyFrame[9].movAvion_x = 5.0f;
+KeyFrame[9].movAvion_y = 5.0f;
+KeyFrame[9].giroAvion = 270.0f;
