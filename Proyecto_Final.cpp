@@ -14,6 +14,10 @@
 #include <vector>
 #include <math.h>
 #include <cmath>
+#include <math.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 #include <glew.h>
 #include <glfw3.h>
@@ -648,7 +652,7 @@ int main()
 
 		glfwPollEvents();
 		//CAMBIO DE CAMARAS//
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_1)) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_Z)) {
 			if (estado < 10) {
 				camera = Camera(glm::vec3(movX, 7.0f, movZ + 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f+rotY, 0.0f, 0.3f, 0.5f);
 			}else if (estado < 20) {
@@ -662,13 +666,13 @@ int main()
 			v2 = false;
 			v3 = v2;
 		}
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_2)) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_X)) {
 			camera = Camera(glm::vec3(0.0f, 100.0f, 00.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, -90.0f, 0.3f, 0.5f);
 			v2 = true;
 			v1 = false;
 			v3 = v1;
 		}
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_3)) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_C)) {
 			camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, -45.0f, 0.3f, 0.5f);
 			v3 = true;
 			v1 = false;
