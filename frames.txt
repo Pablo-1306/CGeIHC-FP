@@ -1,0 +1,130 @@
+KeyFrame[0].movAvion_x = 0.0f;
+KeyFrame[0].movAvion_y = 0.0f;
+KeyFrame[0].movAvion_z = -30.0f;
+KeyFrame[0].giroAvion = 0.0;
+
+KeyFrame[1].movAvion_x = 10.0f;
+KeyFrame[1].movAvion_y = 0.0f;
+KeyFrame[1].movAvion_z = -30.0f;
+KeyFrame[1].giroAvion = 0.0;
+
+KeyFrame[2].movAvion_x = 15.0f;
+KeyFrame[2].movAvion_y = 0.0f;
+KeyFrame[2].movAvion_z = -30.0f;
+KeyFrame[2].giroAvion = 15.0;
+
+KeyFrame[3].movAvion_x = 25.0f;
+KeyFrame[3].movAvion_y = 0.0f;
+KeyFrame[3].movAvion_z = -25.0f;
+KeyFrame[3].giroAvion = 45.0;
+
+KeyFrame[4].movAvion_x = 30.0f;
+KeyFrame[4].movAvion_y = 0.0f;
+KeyFrame[4].movAvion_z = -15.0f;
+KeyFrame[4].giroAvion = 75.0;
+
+KeyFrame[5].movAvion_x = 30.0f;
+KeyFrame[5].movAvion_y = 0.0f;
+KeyFrame[5].movAvion_z = -10.0f;
+KeyFrame[5].giroAvion = 90.0;
+
+KeyFrame[6].movAvion_x = 30.0f;
+KeyFrame[6].movAvion_y = 0.0f;
+KeyFrame[6].movAvion_z = 0.0f;
+KeyFrame[6].giroAvion = 90.0;
+
+KeyFrame[7].movAvion_x = 30.0f;
+KeyFrame[7].movAvion_y = 0.0f;
+KeyFrame[7].movAvion_z = 10.0f;
+KeyFrame[7].giroAvion = 90.0;
+
+KeyFrame[8].movAvion_x = 30.0f;
+KeyFrame[8].movAvion_y = 0.0f;
+KeyFrame[8].movAvion_z = 15.0f;
+KeyFrame[8].giroAvion = 105.0;
+
+KeyFrame[9].movAvion_x = 25.0f;
+KeyFrame[9].movAvion_y = 0.0f;
+KeyFrame[9].movAvion_z = 25.0f;
+KeyFrame[9].giroAvion = 135.0;
+
+KeyFrame[10].movAvion_x = 15.0f;
+KeyFrame[10].movAvion_y = 0.0f;
+KeyFrame[10].movAvion_z = 30.0f;
+KeyFrame[10].giroAvion = 165.0;
+
+KeyFrame[11].movAvion_x = 10.0f;
+KeyFrame[11].movAvion_y = 0.0f;
+KeyFrame[11].movAvion_z = 30.0f;
+KeyFrame[11].giroAvion = 180.0;
+
+KeyFrame[12].movAvion_x = 0.0f;
+KeyFrame[12].movAvion_y = 0.0f;
+KeyFrame[12].movAvion_z = 30.0f;
+KeyFrame[12].giroAvion = 180.0;
+
+KeyFrame[13].movAvion_x = -10.0f;
+KeyFrame[13].movAvion_y = 0.0f;
+KeyFrame[13].movAvion_z = 30.0f;
+KeyFrame[13].giroAvion = 180.0;
+
+KeyFrame[14].movAvion_x = -15.0f;
+KeyFrame[14].movAvion_y = 0.0f;
+KeyFrame[14].movAvion_z = 30.0f;
+KeyFrame[14].giroAvion = 195.0;
+
+KeyFrame[15].movAvion_x = -25.0f;
+KeyFrame[15].movAvion_y = 0.0f;
+KeyFrame[15].movAvion_z = 25.0f;
+KeyFrame[15].giroAvion = 225.0;
+
+KeyFrame[16].movAvion_x = -30.0f;
+KeyFrame[16].movAvion_y = 0.0f;
+KeyFrame[16].movAvion_z = 15.0f;
+KeyFrame[16].giroAvion = 255.0;
+
+KeyFrame[17].movAvion_x = -30.0f;
+KeyFrame[17].movAvion_y = 0.0f;
+KeyFrame[17].movAvion_z = 10.0f;
+KeyFrame[17].giroAvion = 270.0;
+
+KeyFrame[18].movAvion_x = -30.0f;
+KeyFrame[18].movAvion_y = 0.0f;
+KeyFrame[18].movAvion_z = 0.0f;
+KeyFrame[18].giroAvion = 270.0;
+
+KeyFrame[19].movAvion_x = -30.0f;
+KeyFrame[19].movAvion_y = 0.0f;
+KeyFrame[19].movAvion_z = -10.0f;
+KeyFrame[19].giroAvion = 270.0;
+
+KeyFrame[20].movAvion_x = -30.0f;
+KeyFrame[20].movAvion_y = 0.0f;
+KeyFrame[20].movAvion_z = -15.0f;
+KeyFrame[20].giroAvion = 285.0;
+
+KeyFrame[21].movAvion_x = -25.0f;
+KeyFrame[21].movAvion_y = 0.0f;
+KeyFrame[21].movAvion_z = -25.0f;
+KeyFrame[21].giroAvion = 315.0;
+
+KeyFrame[22].movAvion_x = -15.0f;
+KeyFrame[22].movAvion_y = 0.0f;
+KeyFrame[22].movAvion_z = -30.0f;
+KeyFrame[22].giroAvion = 345.0;
+
+KeyFrame[23].movAvion_x = -10.0f;
+KeyFrame[23].movAvion_y = 0.0f;
+KeyFrame[23].movAvion_z = -30.0f;
+KeyFrame[23].giroAvion = 360.0;
+
+KeyFrame[24].movAvion_x = 0.0f;
+KeyFrame[24].movAvion_y = 0.0f;
+KeyFrame[24].movAvion_z = -30.0f;
+KeyFrame[24].giroAvion = 360.0;
+
+KeyFrame[25].movAvion_x = 20.0f;
+KeyFrame[25].movAvion_y = -15.0f;
+KeyFrame[25].movAvion_z = -30.0f;
+KeyFrame[25].giroAvion = 360.0;
+

@@ -473,7 +473,7 @@ void saveFrame(void) //tecla L
 	//Esto es lo que hay que guardar en un archivo /////////////////////////
 
 	KeyFrame[FrameIndex].movAvion_x = movAvion_x;
-	KeyFrame[FrameIndex].movAvion_x = movAvion_y;
+	KeyFrame[FrameIndex].movAvion_y = movAvion_y;
 	KeyFrame[FrameIndex].movAvion_z = movAvion_z;
 	KeyFrame[FrameIndex].giroAvion = giroAvion;
 
@@ -489,7 +489,7 @@ void resetElements(void) //Tecla 0
 {
 
 	movAvion_x = KeyFrame[0].movAvion_x;
-	movAvion_x = KeyFrame[0].movAvion_y;
+	movAvion_y = KeyFrame[0].movAvion_y;
 	movAvion_z = KeyFrame[0].movAvion_z;
 	giroAvion = KeyFrame[0].giroAvion;
 }
