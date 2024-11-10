@@ -1,15 +1,14 @@
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Camera.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Camera.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\DirectionalLight.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\DirectionalLight.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Light.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Light.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Material.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Material.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Mesh_tn.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Mesh_tn.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Model.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Model.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\PointLight.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\PointLight.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\P092-318217037.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\P092-318217037.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Proyecto_Final.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Proyecto_Final.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Shader_light.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Shader_light.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Skybox.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Skybox.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Sphere.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Sphere.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\SpotLight.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\SpotLight.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Texture.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Texture.obj
-C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Window.cpp;C:\Users\sacbe\OneDrive\Documentos\Proyecto_Compú_Grafica\CGeIHC-FP\Compu_grafica_25\Debug\Window.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Camera.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Camera.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\DirectionalLight.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\DirectionalLight.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Light.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Light.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Material.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Material.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Mesh_tn.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Mesh_tn.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Model.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Model.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\PointLight.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\PointLight.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Proyecto_Final.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Shader_light.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Shader_light.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Skybox.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Skybox.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Sphere.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Sphere.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\SpotLight.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\SpotLight.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Texture.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Texture.obj
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.cpp;D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Compu_grafica_25\Debug\Window.obj

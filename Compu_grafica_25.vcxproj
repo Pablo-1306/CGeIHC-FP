@@ -140,7 +140,6 @@
     <ClCompile Include="Mesh_tn.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="P092-318217037.cpp" />
     <ClCompile Include="Proyecto_Final.cpp" />
     <ClCompile Include="Shader_light.cpp" />
     <ClCompile Include="Skybox.cpp" />
@@ -158,6 +157,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shader_light.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
