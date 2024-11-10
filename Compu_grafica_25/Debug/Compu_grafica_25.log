@@ -5,10 +5,10 @@ D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(12,
 D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   (compilando archivo de origen "Proyecto_Final.cpp")
   
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(885,18): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(887,19): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(890,19): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(898,18): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(905,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(907,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(905,18): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(907,19): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(910,19): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(918,18): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(925,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(927,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
   Compu_grafica_25.vcxproj -> D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Debug\Compu_grafica_25.exe
