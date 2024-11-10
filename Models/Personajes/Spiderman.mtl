@@ -1,0 +1,64 @@
+# Blender 4.2.3 LTS MTL File: 'FFH SUIT.blend'
+# www.blender.org
+
+newmtl FFH_Webshooters
+Ns 90.000000
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/AI/spider_man_integrated_suit___nwh_app_by_mann53_dewj0uw/Spider-Man Integrated Suit - NWH APP/Sell/FFH SUIT/textures/Webshooter_D.png
+map_Bump -bm 1.000000 D:/AI/spider_man_integrated_suit___nwh_app_by_mann53_dewj0uw/Spider-Man Integrated Suit - NWH APP/Sell/FFH SUIT/textures/Webshooters N.png
+
+newmtl Frame
+Ns 490.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Frame.001
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl LOGO
+Ns 302.500000
+Ka 0.450000 0.450000 0.450000
+Kd 0.000469 0.000469 0.000469
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Lenses.001
+Ns 360.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl Spider-man_FFH_Old
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd spiderman/uploads_files_3680280_FFH+SUIT+v2/textures/Tom Holland Spider-man12_Spider-man Suit New UV_BaseColor.<UDIM>.png
+map_Ns D:/AI/spider_man_integrated_suit___nwh_app_by_mann53_dewj0uw/Spider-Man Integrated Suit - NWH APP/Sell/FFH SUIT/textures/Tom Holland Spider-man12_Spider-man Suit New UV_Roughness.<UDIM>.png
+map_refl D:/AI/spider_man_integrated_suit___nwh_app_by_mann53_dewj0uw/Spider-Man Integrated Suit - NWH APP/Sell/FFH SUIT/textures/Tom Holland Spider-man12_Spider-man Suit New UV_Metallic.<UDIM>.png

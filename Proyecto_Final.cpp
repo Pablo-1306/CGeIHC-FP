@@ -1,7 +1,10 @@
-
-/*
-Proyecto final
-*/
+///*
+//Proyecto Final de Computación Gráfica e Interacción Humano Computadora
+//
+//Hernandez Solis Brandon
+//Reyes Arroyo Pablo Antonio
+//
+//*/
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -359,7 +362,8 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -40.0f, 0.3f, 0.5f);
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -50.0f, 0.3f, 0.5f);
+	glfwPollEvents();
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -525,67 +529,66 @@ int main()
 	Material_opaco = Material(0.3f, 4);
 
 
-	////luz direccional, sólo 1 y siempre debe de existir
-	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-	//	//Intensidad
-	//	0.5f, 0.5f,
-	//	//Direccion de la luz
-	//	despl_solx, despl_soly, despl_solz);
+	//luz direccional, sólo 1 y siempre debe de existir
+	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+		//Intensidad
+		0.5f, 0.5f,
+		//Direccion de la luz
+		0.0f, 0.0f, -1.0f);
 
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-		0.4f, 1.0f,
-		-6.0f, 1.5f, 1.5f,
-		0.3f, 0.2f, 0.1f);
-	pointLightCount++;
+	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
+	//	0.4f, 1.0f,
+	//	-6.0f, 1.5f, 1.5f,
+	//	0.3f, 0.2f, 0.1f);
+	//pointLightCount++;
 
-	//Declaración de luz de mi lampara	
-	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
-		1.0f, 3.0f,					// Intensidad alta para que se note
-		0.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
-		0.1f, 0.1f, 0.02f);			// Atenuacion
-	pointLightCount++;
+	////Declaración de luz de mi lampara	
+	//pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
+	//	1.0f, 3.0f,					// Intensidad alta para que se note
+	//	40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
+	//	0.1f, 0.1f, 0.02f);			// Atenuacion
+	//pointLightCount++;
 
 	unsigned int spotLightCount = 0;
-	//linterna
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		//Tamaño cono
-		//Tama�o cono
-		20.0f);
-	spotLightCount++;
+	////linterna
+	//spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+	//	0.0f, 1.0f,
+	//	0.0f, 0.0f, 0.0f,
+	//	0.0f, -1.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	//Tama�o cono
+	//	20.0f);
+	//spotLightCount++;
 
-	//luz fija
-	spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
-		1.0f, 2.0f,
-		5.0f, 10.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		15.0f);
-	spotLightCount++;
+	////luz fija
+	//spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
+	//	1.0f, 2.0f,
+	//	5.0f, 10.0f, 0.0f,
+	//	0.0f, -5.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	15.0f);
+	//spotLightCount++;
 
-	//luz Faro
-	spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-5.0f, 0.0f, 0.0f,		//Direccion en -X
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Faro
+	//spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-5.0f, 0.0f, 0.0f,		//Direccion en -X
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
-	//luz Helicoptero
-	spotLights[3] = SpotLight(0.0f, 0.0f, 0.0f, //Color Amarillo
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Helicoptero
+	//spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
 	//se crean mas luces puntuales y spotlight 
 
@@ -646,7 +649,15 @@ int main()
 		glfwPollEvents();
 		//CAMBIO DE CAMARAS//
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_1)) {
-			camera = Camera(glm::vec3(posxPersonaje, 7.0f, poszPersonaje + 15), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.3f, 0.5f);
+			if (estado < 10) {
+				camera = Camera(glm::vec3(movX, 7.0f, movZ + 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f+rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 20) {
+				camera = Camera(glm::vec3(movX - 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 30) {
+				camera = Camera(glm::vec3(movX, 7.0f, movZ - 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f + rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 40) {
+				camera = Camera(glm::vec3(movX + 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
+			}
 			v1 = true;
 			v2 = false;
 			v3 = v2;
@@ -699,7 +710,7 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true) {
 			salto = 3.5;
 			srand((unsigned)time(NULL));
 			c = (rand() % 5) + 1;
@@ -725,8 +736,6 @@ int main()
 				Personaje = !Personaje;  // Alterna el booleano solo cuando se completa un ciclo
 			}
 
-			
-
 			printf("Casilla: %d\n", estado);
 
 		}
@@ -736,6 +745,7 @@ int main()
 
 		//logica de dado
 		if (salto > 0) {
+			finaliza = false;
 			if (baja) {
 				if (movDado8 > 0.0f) {
 					movDado8 -= movOffsetLet * deltaTime;
@@ -760,6 +770,8 @@ int main()
 			}
 		}
 		else {
+			finaliza = true;
+			avanza = true;
 			if (c == 1 || c == 2 || c == 5 || c == 6) {
 				rotDado_8 = 2.5f;
 				rotDado8 = 50;
@@ -810,11 +822,7 @@ int main()
 					lastRot4 = -90;
 				}
 			}
-
 		}
-
-		
-
 
 
 		//////////////////////////////////////
@@ -930,7 +938,7 @@ int main()
 		//			Personajes				//
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, 35.0f));
+		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
