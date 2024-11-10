@@ -158,6 +158,17 @@ Model Estatua;
 Model Puente;
 Model Universidad;
 
+//				Ciudad				//
+
+Model Canon;
+Model EmpireState;
+Model Crucero;
+Model Apartamento;
+Model Edificio;
+Model Scarag;
+Model EstacionEspacial;
+Model StarFighter;
+
 //////////////////////////////////////
 //////////////////////////////////////
 
@@ -472,6 +483,25 @@ int main()
 	Estatua = Model();
 	Estatua.LoadModel("Models/Edificios/Estatua.obj");
 
+	//               Ciudad				//
+
+	Canon = Model();
+	Canon.LoadModel("Models/Ciudad/CanonPlasma.obj");
+	Crucero = Model();
+	Crucero.LoadModel("Models/Ciudad/Crucero.obj");
+	Apartamento = Model();
+	Apartamento.LoadModel("Models/Ciudad/Edificio.obj");
+	Edificio = Model();
+	Edificio.LoadModel("Models/Ciudad/EdificioLetrero.obj");
+	EmpireState = Model();
+	EmpireState.LoadModel("Models/Ciudad/EmpireState.obj");
+	EstacionEspacial = Model();
+	EstacionEspacial.LoadModel("Models/Ciudad/EstacionEspacial.obj");
+	Scarag = Model();
+	Scarag.LoadModel("Models/Ciudad/Scarag.obj");
+	StarFighter = Model();
+	StarFighter.LoadModel("Models/Ciudad/NaveTriangular.obj");
+
 	//               DADO                //
 
 	dado8 = Model();
@@ -514,7 +544,7 @@ int main()
 	//Declaración de luz de mi lampara	
 	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
 		1.0f, 3.0f,					// Intensidad alta para que se note
-		40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
+		0.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
 		0.1f, 0.1f, 0.02f);			// Atenuacion
 	pointLightCount++;
 
@@ -820,6 +850,12 @@ int main()
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
+
+		// Guardo la posición del personaje
+		glm::vec3 PosicionPersonaje;
+
+		//// Luz que sigue al personaje
+		//pointLights[1].SetPos(Personaje);  // Actualiza la posición de la luz
 
 		glm::mat4 model(1.0);
 		glm::mat4 modelaux(1.0);
@@ -1252,6 +1288,64 @@ int main()
 		}
 
 		//////////////////////////////////////
+
+		//			Ciudad				//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(70.0f, 25.0f, 70.0f));
+		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Canon.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-50.0f, 40.0f, 0.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Crucero.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 29.0f, -70.0f));
+		model = glm::scale(model, glm::vec3(30.0f, 30.0f, 30.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Apartamento.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-70.0f, 29.0f, -70.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(30.0f, 30.0f, 30.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Edificio.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(70.0f, 49.0f, -70.0f));
+		model = glm::scale(model, glm::vec3(50.0f, 50.0f, 50.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		EmpireState.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 30.0f, 70.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(30.0f, 30.0f, 30.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		EstacionEspacial.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(70.0f, 17.0f, 0.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(40.0f, 40.0f, 40.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Scarag.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-60.0f, 25.0f, 60.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(30.0f, 30.0f, 30.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		StarFighter.RenderModel();
+
+		//////////////////////////////////////
 		//////////////////////////////////////
 
 		//	Modelos
@@ -1265,6 +1359,7 @@ int main()
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (Personaje) {
+			PosicionPersonaje = glm::vec3(model[3]) + glm::vec3(0.0f, 10.0f, 0.0f);
 			Jefe.RenderModel();
 		}
 		
@@ -1277,6 +1372,7 @@ int main()
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (!Personaje) {
+			PosicionPersonaje = glm::vec3(model[3]) + glm::vec3(0.0f, 10.0f, 0.0f);
 			Spiderman.RenderModel();
 		}
 
