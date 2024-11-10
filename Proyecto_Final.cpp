@@ -1,7 +1,10 @@
-
-/*
-Proyecto final
-*/
+///*
+//Proyecto Final de Computación Gráfica e Interacción Humano Computadora
+//
+//Hernandez Solis Brandon
+//Reyes Arroyo Pablo Antonio
+//
+//*/
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -11,6 +14,10 @@ Proyecto final
 #include <vector>
 #include <math.h>
 #include <cmath>
+#include <math.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 #include <glew.h>
 #include <glfw3.h>
@@ -36,12 +43,6 @@ Proyecto final
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
-
-// Para Keyframes
-#include <iomanip>
-#include <regex>
-/////////////////
-
 const float toRadians = 3.14159265f / 180.0f;
 
 bool alternar;
@@ -174,20 +175,6 @@ Model Edificio;
 Model Scarag;
 Model EstacionEspacial;
 Model StarFighter;
-
-//////////////////////////////////////
-//////////////////////////////////////
-
-Model Banshee;
-
-//variables para keyframes
-float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
-// Ruta del archivo para guardar los frames
-const char* framesFilePath = "frames.txt";
-
-//función para teclado de keyframes 
-void inputKeyframes(bool* keys);
 
 //////////////////////////////////////
 //////////////////////////////////////
@@ -369,174 +356,6 @@ void CreateShaders()
 	shaderList.push_back(*shader1);
 }
 
-///////////////////////////////KEYFRAMES/////////////////////
-
-
-bool animacion = false;
-
-
-//NEW// Keyframes
-float posXavion = 0.0, posYavion = 20.0, posZavion = 0.0;
-float movAvion_x = 0.0f, movAvion_y = 0.0f, movAvion_z = 0.0f;
-float giroAvion = 0;
-
-#define MAX_FRAMES 100
-int i_max_steps = 90;
-int i_curr_steps = 0;	//Se modifca en funcion de los frames que tenemos. La secuencia se crea inicializando en 0
-typedef struct _frame
-{
-	//Variables para GUARDAR Key Frames
-	float movAvion_x;			//Variable para PosicionX
-	float movAvion_y;			//Variable para PosicionY
-	float movAvion_z;			//Variable para PosicionZ
-	float movAvion_xInc;		//Variable para IncrementoX
-	float movAvion_yInc;		//Variable para IncrementoY
-	float movAvion_zInc;		//Variable para IncrementoZ
-	float giroAvion;			//Giro para el helicoptero sobre Y
-	float giroAvionInc;			//Giro para el helicoptero sobre Y
-}FRAME;
-
-FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 0;			//introducir datos de cantidad de frames. La secuencia se crea inicializando en 0
-bool play = false;
-int playIndex = 0;
-
-// Función para guardar los frames en el archivo
-void saveFramesToFile() {
-	std::ofstream outFile(framesFilePath);
-	if (outFile.is_open()) {
-		for (int i = 0; i < FrameIndex; ++i) {
-			outFile << std::fixed << std::setprecision(1);  // Asegura un decimal para floats
-			outFile << "KeyFrame[" << i << "].movAvion_x = " << KeyFrame[i].movAvion_x << "f;\n";
-			outFile << "KeyFrame[" << i << "].movAvion_y = " << KeyFrame[i].movAvion_y << "f;\n";
-			outFile << "KeyFrame[" << i << "].movAvion_z = " << KeyFrame[i].movAvion_z << "f;\n";
-			outFile << "KeyFrame[" << i << "].giroAvion = " << KeyFrame[i].giroAvion << ";\n\n";
-		}
-		outFile.close();
-	}
-}
-
-
-// Cargar frames desde archivo
-void loadFramesFromFile() {
-	std::ifstream inFile(framesFilePath);
-	if (inFile.is_open()) {
-		std::string line;
-		// Reinicia el índice de frames para cargar desde el archivo
-		FrameIndex = 0;
-
-		//Expresion regular para la lectura
-		std::regex regexPattern(R"(KeyFrame\[\d+\]\.(\w+) = (-?\d+\.?\d*)f?;)");
-
-		while (std::getline(inFile, line)) {
-			std::smatch match;
-			if (std::regex_search(line, match, regexPattern)) {
-				std::string variable = match[1];
-				float value = std::stof(match[2]);
-
-				if (variable == "movAvion_x") {
-					KeyFrame[FrameIndex].movAvion_x = value;
-				}
-				else if (variable == "movAvion_y") {
-					KeyFrame[FrameIndex].movAvion_y = value;
-				}
-				else if (variable == "movAvion_z") {
-					KeyFrame[FrameIndex].movAvion_z = value;
-				}
-				else if (variable == "giroAvion") {
-					KeyFrame[FrameIndex].giroAvion = value;
-					// Incremente FrameIndex para leer el siguiente
-					FrameIndex++;
-				}
-			}
-			if (FrameIndex >= MAX_FRAMES) break;  // Evitar desbordamiento de frames
-		}
-		inFile.close();
-		printf("Frames cargados exitosamente desde el archivo.");
-	}
-	else {
-		printf("Error al abrir el archivo para lectura.");
-	}
-}
-
-void saveFrame(void) //tecla L
-{
-
-	printf("frameindex %d\n", FrameIndex);
-
-	//Esto es lo que hay que guardar en un archivo /////////////////////////
-
-	KeyFrame[FrameIndex].movAvion_x = movAvion_x;
-	KeyFrame[FrameIndex].movAvion_x = movAvion_y;
-	KeyFrame[FrameIndex].movAvion_z = movAvion_z;
-	KeyFrame[FrameIndex].giroAvion = giroAvion;
-
-	FrameIndex++;
-
-	// Guardar los frames actualizados en el archivo
-	saveFramesToFile();
-	printf("\nFrame guardado. Total de frames: %d\n", FrameIndex);
-
-}
-
-void resetElements(void) //Tecla 0
-{
-
-	movAvion_x = KeyFrame[0].movAvion_x;
-	movAvion_x = KeyFrame[0].movAvion_y;
-	movAvion_z = KeyFrame[0].movAvion_z;
-	giroAvion = KeyFrame[0].giroAvion;
-}
-
-void interpolation(void)
-{
-	KeyFrame[playIndex].movAvion_xInc = (KeyFrame[playIndex + 1].movAvion_x - KeyFrame[playIndex].movAvion_x) / i_max_steps;
-	KeyFrame[playIndex].movAvion_yInc = (KeyFrame[playIndex + 1].movAvion_y - KeyFrame[playIndex].movAvion_y) / i_max_steps;
-	KeyFrame[playIndex].movAvion_zInc = (KeyFrame[playIndex + 1].movAvion_z - KeyFrame[playIndex].movAvion_z) / i_max_steps;
-	KeyFrame[playIndex].giroAvionInc = (KeyFrame[playIndex + 1].giroAvion - KeyFrame[playIndex].giroAvion) / i_max_steps;
-
-}
-
-
-void animate(void)
-{
-	//Movimiento del objeto con barra espaciadora
-	if (play)
-	{
-		if (i_curr_steps >= i_max_steps) //fin de animación entre frames?
-		{
-			playIndex++;
-			printf("playindex : %d\n", playIndex);
-			if (playIndex > FrameIndex - 2)	//Fin de toda la animación con último frame?
-			{
-				printf("Frame index= %d\n", FrameIndex);
-				printf("termino la animacion\n");
-				playIndex = 0;
-				play = false;
-			}
-			else //Interpolación del próximo cuadro
-			{
-
-				i_curr_steps = 0; //Resetea contador
-				//Interpolar
-				interpolation();
-			}
-		}
-		else
-		{
-			//Dibujar Animación
-			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
-			movAvion_y += KeyFrame[playIndex].movAvion_yInc;
-			movAvion_z += KeyFrame[playIndex].movAvion_zInc;
-			giroAvion += KeyFrame[playIndex].giroAvionInc;
-			i_curr_steps++;
-		}
-
-	}
-}
-
-///////////////* FIN KEYFRAMES*////////////////////////////
-
 
 
 int main()
@@ -547,10 +366,8 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, -40.0f, 0.3f, 0.5f);
-
-	// Cargar frames desde archivo
-	loadFramesFromFile();
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 60.0f, -50.0f, 0.3f, 0.5f);
+	glfwPollEvents();
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -716,67 +533,66 @@ int main()
 	Material_opaco = Material(0.3f, 4);
 
 
-	////luz direccional, sólo 1 y siempre debe de existir
-	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-	//	//Intensidad
-	//	0.5f, 0.5f,
-	//	//Direccion de la luz
-	//	despl_solx, despl_soly, despl_solz);
+	//luz direccional, sólo 1 y siempre debe de existir
+	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+		//Intensidad
+		0.5f, 0.5f,
+		//Direccion de la luz
+		0.0f, 0.0f, -1.0f);
 
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-		0.4f, 1.0f,
-		-6.0f, 1.5f, 1.5f,
-		0.3f, 0.2f, 0.1f);
-	pointLightCount++;
+	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
+	//	0.4f, 1.0f,
+	//	-6.0f, 1.5f, 1.5f,
+	//	0.3f, 0.2f, 0.1f);
+	//pointLightCount++;
 
-	//Declaración de luz de mi lampara	
-	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
-		1.0f, 3.0f,					// Intensidad alta para que se note
-		0.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
-		0.1f, 0.1f, 0.02f);			// Atenuacion
-	pointLightCount++;
+	////Declaración de luz de mi lampara	
+	//pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
+	//	1.0f, 3.0f,					// Intensidad alta para que se note
+	//	40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
+	//	0.1f, 0.1f, 0.02f);			// Atenuacion
+	//pointLightCount++;
 
 	unsigned int spotLightCount = 0;
-	//linterna
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		//Tamaño cono
-		//Tama�o cono
-		20.0f);
-	spotLightCount++;
+	////linterna
+	//spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+	//	0.0f, 1.0f,
+	//	0.0f, 0.0f, 0.0f,
+	//	0.0f, -1.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	//Tama�o cono
+	//	20.0f);
+	//spotLightCount++;
 
-	//luz fija
-	spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
-		1.0f, 2.0f,
-		5.0f, 10.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		15.0f);
-	spotLightCount++;
+	////luz fija
+	//spotLights[1] = SpotLight(0.0f, 0.0f, 0.0f,
+	//	1.0f, 2.0f,
+	//	5.0f, 10.0f, 0.0f,
+	//	0.0f, -5.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	15.0f);
+	//spotLightCount++;
 
-	//luz Faro
-	spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-5.0f, 0.0f, 0.0f,		//Direccion en -X
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Faro
+	//spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-5.0f, 0.0f, 0.0f,		//Direccion en -X
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
-	//luz Helicoptero
-	spotLights[3] = SpotLight(0.0f, 0.0f, 0.0f, //Color Amarillo
-		1.0f, 2.0f,
-		15.0f, 2.0f, 0.0f,		//Posicion inicial
-		-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
-		1.0f, 0.0f, 0.0f,
-		25.0f);
-	spotLightCount++;
+	////luz Helicoptero
+	//spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
+	//	1.0f, 2.0f,
+	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
+	//	-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
+	//	1.0f, 0.0f, 0.0f,
+	//	25.0f);
+	//spotLightCount++;
 
 	//se crean mas luces puntuales y spotlight 
 
@@ -823,23 +639,6 @@ int main()
 
 	Personaje = true;
 
-	//Cargar modelo de la nave Banshee
-
-	Banshee = Model();
-	Banshee.LoadModel("Models/Banshee.obj");
-
-	// Informacion para la terminal sobre KeyFrames 
-
-	printf("\nCamara Personaje: Z\nCamara Aerea: X\nCamara Monopoli: C");
-
-	printf("\nTeclas para uso de Keyframes:\n1.-Presionar barra espaciadora para reproducir animacion.\n2.-Presionar 0 para volver a habilitar reproduccion de la animacion\n");
-	printf("3.-Presiona L para guardar frame\n4.-Presiona P para habilitar guardar nuevo frame\n5.-Presiona 1 para mover en X -\n6.-Presiona 2 para habilitar mover en X -\n");
-	printf("7.-Presiona 3 para mover en X +\n8.-Presiona 4 para habilitar mover en X +\n9.-Presiona 5 para mover en Y -\n10.-Presiona 6 para habilitar mover en Y -\n");
-	printf("11.-Presiona 7 para mover en Y +\n12.-Presiona 8 para habilitar mover en Y +\n13.-Presiona 9 para rotar en Y \n14.-Presiona Q para habilitar rotar en Y\n");
-	printf("15.-Presiona E para mover en Z -\n16.-Presiona R para habilitar mover en Z -\n17.-Presiona T para mover en Z +\n18.-Presiona Y para habilitar mover en Z +\n\n");
-
-	// Posicion de la nave 
-	glm::vec3 posBanshee = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -854,7 +653,15 @@ int main()
 		glfwPollEvents();
 		//CAMBIO DE CAMARAS//
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_Z)) {
-			camera = Camera(glm::vec3(posxPersonaje, 7.0f, poszPersonaje + 15), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 0.3f, 0.5f);
+			if (estado < 10) {
+				camera = Camera(glm::vec3(movX, 7.0f, movZ + 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f+rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 20) {
+				camera = Camera(glm::vec3(movX - 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 30) {
+				camera = Camera(glm::vec3(movX, 7.0f, movZ - 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f + rotY, 0.0f, 0.3f, 0.5f);
+			}else if (estado < 40) {
+				camera = Camera(glm::vec3(movX + 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
+			}
 			v1 = true;
 			v2 = false;
 			v3 = v2;
@@ -907,7 +714,7 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true) {
 			salto = 3.5;
 			srand((unsigned)time(NULL));
 			c = (rand() % 5) + 1;
@@ -933,8 +740,6 @@ int main()
 				Personaje = !Personaje;  // Alterna el booleano solo cuando se completa un ciclo
 			}
 
-			
-
 			printf("Casilla: %d\n", estado);
 
 		}
@@ -944,6 +749,7 @@ int main()
 
 		//logica de dado
 		if (salto > 0) {
+			finaliza = false;
 			if (baja) {
 				if (movDado8 > 0.0f) {
 					movDado8 -= movOffsetLet * deltaTime;
@@ -968,6 +774,8 @@ int main()
 			}
 		}
 		else {
+			finaliza = true;
+			avanza = true;
 			if (c == 1 || c == 2 || c == 5 || c == 6) {
 				rotDado_8 = 2.5f;
 				rotDado8 = 50;
@@ -1018,14 +826,8 @@ int main()
 					lastRot4 = -90;
 				}
 			}
-
 		}
 
-		
-
-		//-------Para Keyframes
-		inputKeyframes(mainWindow.getsKeys());
-		animate();
 
 		//////////////////////////////////////
 		//////////////////////////////////////
@@ -1140,7 +942,7 @@ int main()
 		//			Personajes				//
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, 35.0f));
+		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1763,21 +1565,6 @@ int main()
 			}
 		}
 
-		// Modelo para keyFrames
-
-		model = glm::mat4(1.0);
-		posBanshee = glm::vec3(posXavion + movAvion_x, posYavion + movAvion_y, posZavion + movAvion_z);
-		model = glm::translate(model, posBanshee);
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		//color = glm::vec3(0.0f, 1.0f, 0.0f);
-		//glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Banshee.RenderModel();
-
 
 		glUseProgram(0);
 
@@ -1787,236 +1574,3 @@ int main()
 	return 0;
 }
 
-void inputKeyframes(bool* keys)
-{
-	if (keys[GLFW_KEY_SPACE])
-	{
-		if (reproduciranimacion < 1)
-		{
-			if (play == false && (FrameIndex > 1))
-			{
-				resetElements();
-				//First Interpolation				
-				interpolation();
-				play = true;
-				playIndex = 0;
-				i_curr_steps = 0;
-				reproduciranimacion++;
-				printf("\n presiona 0 para habilitar reproducir de nuevo la animación'\n");
-				habilitaranimacion = 0;
-
-			}
-			else
-			{
-				play = false;
-
-			}
-		}
-	}
-	if (keys[GLFW_KEY_0])
-	{
-		if (habilitaranimacion < 1 && reproduciranimacion>0)
-		{
-			printf("Ya puedes reproducir de nuevo la animación con la tecla de barra espaciadora'\n");
-			reproduciranimacion = 0;
-			habilitaranimacion++;
-
-		}
-	}
-
-	if (keys[GLFW_KEY_L])
-	{
-		if (guardoFrame < 1)
-		{
-			saveFrame();
-			printf("movAvion_x es: %f\n", movAvion_x);
-			printf("movAvion_y es: %f\n", movAvion_y);
-			printf("movAvion_z es: %f\n", movAvion_z);
-			printf("rotAvion es: %f\n", giroAvion);
-			printf("presiona P para habilitar guardar otro frame'\n");
-			guardoFrame++;
-			reinicioFrame = 0;
-		}
-	}
-	if (keys[GLFW_KEY_P])
-	{
-		if (reinicioFrame < 1)
-		{
-			guardoFrame = 0;
-			printf("Ya puedes guardar otro frame presionando la tecla L'\n");
-			reinicioFrame++;
-		}
-	}
-
-	// X -
-
-	if (keys[GLFW_KEY_1])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			movAvion_x -= 5.0f;
-			printf("\n movAvion_x es: %f\n", movAvion_x);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 2 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_2])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 1\n");
-		}
-	}
-
-	// X +
-
-	if (keys[GLFW_KEY_3])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			movAvion_x += 5.0f;
-			printf("\n movAvion_x es: %f\n", movAvion_x);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 4 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_4])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 3\n");
-		}
-	}
-
-	// Y -
-
-	if (keys[GLFW_KEY_5])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_y -= 5.0f;
-			printf("\n movAvion_y es: %f\n", movAvion_y);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 6 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_6])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 5\n");
-		}
-	}
-
-	// Y +
-
-	if (keys[GLFW_KEY_7])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_y += 5.0f;
-			printf("\n movAvion_y es: %f\n", movAvion_y);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 6 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_8])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 7\n");
-		}
-	}
-
-	//Rotacion
-
-	if (keys[GLFW_KEY_9])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			giroAvion += 15.0f;
-			printf("\n rotAvion es: %f\n", giroAvion);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla Q para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_Q])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 9\n");
-		}
-	}
-
-	// Z -
-
-	if (keys[GLFW_KEY_E])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_z -= 5.0f;
-			printf("\n movAvion_z es: %f\n", movAvion_z);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla R para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_R])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla E\n");
-		}
-	}
-
-	// Z +
-
-	if (keys[GLFW_KEY_T])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_z += 5.0f;
-			printf("\n movAvion_z es: %f\n", movAvion_z);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla Y para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_Y])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla T\n");
-		}
-	}
-
-}
