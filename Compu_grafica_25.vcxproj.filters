@@ -54,7 +54,7 @@
     <ClCompile Include="Shader_light.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Proyecto_final.cpp">
+    <ClCompile Include="Proyecto_Final.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
