@@ -78,7 +78,12 @@ unsigned int val;
 
 // Control del tablero //
 int estado;
+bool Animacion;
 
+//Tiempo
+float tiempoAcumulado;
+float tIni;
+float tFin;
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -181,20 +186,6 @@ Model Edificio;
 Model Scarag;
 Model EstacionEspacial;
 Model StarFighter;
-
-//////////////////////////////////////
-//////////////////////////////////////
-
-Model Banshee;
-
-//variables para keyframes
-float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
-// Ruta del archivo para guardar los frames
-const char* framesFilePath = "KeyFrames.txt";
-
-//función para teclado de keyframes 
-void inputKeyframes(bool* keys);
 
 //////////////////////////////////////
 //////////////////////////////////////
@@ -376,165 +367,67 @@ void CreateShaders()
 	shaderList.push_back(*shader1);
 }
 
-///////////////////////////////KEYFRAMES/////////////////////
+// Variables antes del main: TiempoInicio = TiempoTranscurrido, TiempoFin = TiempoTranscurrido + 8 seg
+// Animacion Avanzada
+float MovimientoAvanzado(float tIni, float tiempoAcumulado) {
+	// Parametros de tiempo
+	float tiempoTranscurrido = tiempoAcumulado - tIni;
 
+	// Parametros de ajuste
+	float maxValue = 10.0f; 		// Altura Maxima
+	float velSubida = 5.0f;		// Velocidad de cambio
+	float velBajada = -5.0f;
+	float centroSubida = 1.0f;	// Centrado de la curva = #/2
+	float centroBajada = 6.0f;
 
-bool animacion = false;
+	float movimiento = 0.0f;
 
-
-//NEW// Keyframes
-float posXavion = 0.0, posYavion = 5.0, posZavion = 0.0;
-float movAvion_x = 0.0f, movAvion_y = 0.0f, movAvion_z = 0.0f;
-float giroAvion = 0;
-
-#define MAX_FRAMES 100
-int i_max_steps = 90;
-int i_curr_steps = 0;	//Se modifca en funcion de los frames que tenemos. La secuencia se crea inicializando en 0
-typedef struct _frame
-{
-	//Variables para GUARDAR Key Frames
-	float movAvion_x;			//Variable para PosicionX
-	float movAvion_y;			//Variable para PosicionY
-	float movAvion_z;			//Variable para PosicionZ
-	float movAvion_xInc;		//Variable para IncrementoX
-	float movAvion_yInc;		//Variable para IncrementoY
-	float movAvion_zInc;		//Variable para IncrementoZ
-	float giroAvion;			//Giro para el helicoptero sobre Y
-	float giroAvionInc;			//Giro para el helicoptero sobre Y
-}FRAME;
-
-FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 0;			//introducir datos de cantidad de frames. La secuencia se crea inicializando en 0
-bool play = false;
-int playIndex = 0;
-
-
-// Cargar frames desde archivo
-void loadFramesFromFile() {
-	std::ifstream inFile(framesFilePath);
-	if (inFile.is_open()) {
-		std::string line;
-		// Reinicia el índice de frames para cargar desde el archivo
-		FrameIndex = 0;
-
-		//Expresion regular para la lectura
-		std::regex regexPattern(R"(KeyFrame\[\d+\]\.(\w+) = (-?\d+\.?\d*)f?;)");
-
-		while (std::getline(inFile, line)) {
-			std::smatch match;
-			if (std::regex_search(line, match, regexPattern)) {
-				std::string variable = match[1];
-				float value = std::stof(match[2]);
-
-				if (variable == "movAvion_x") {
-					KeyFrame[FrameIndex].movAvion_x = value;
-				}
-				else if (variable == "movAvion_y") {
-					KeyFrame[FrameIndex].movAvion_y = value;
-				}
-				else if (variable == "movAvion_z") {
-					KeyFrame[FrameIndex].movAvion_z = value;
-				}
-				else if (variable == "giroAvion") {
-					KeyFrame[FrameIndex].giroAvion = value;
-					// Incremente FrameIndex para leer el siguiente
-					FrameIndex++;
-				}
-			}
-			if (FrameIndex >= MAX_FRAMES) break;  // Evitar desbordamiento de frames
-		}
-		inFile.close();
-		printf("Frames cargados exitosamente desde el archivo.");
+	// Control de tiempo
+	if (tiempoTranscurrido < 3.5f) {
+		//Subir
+		movimiento = maxValue * (1.0f / (1.0f + exp(-velSubida * (tiempoTranscurrido - (centroSubida)))));
+		//printf("SMovimiento: %f ", movimiento);
 	}
-	else {
-		printf("Error al abrir el archivo para lectura.");
+	else if (tiempoTranscurrido >= 3.5f && tiempoTranscurrido < 9) {
+		//Bajar
+		movimiento = maxValue * (1.0f / (1.0f + exp(-velBajada * (tiempoTranscurrido - (centroBajada)))));
+		//printf("BMovimiento: %f ", movimiento);
 	}
+
+	// Retornar el valor calculado que oscila entre 0 y 10
+	return movimiento;
 }
 
-void saveFrame(void) //tecla L
-{
+float RotacionAvanzada(float tIni, float tiempoAcumulado) {
+	// Parametros de tiempo
+	float tiempoTranscurrido = tiempoAcumulado - tIni;
 
-	printf("frameindex %d\n", FrameIndex);
+	//printf("tAnimando: %f, ", tiempoTranscurrido);
 
-	//Esto es lo que hay que guardar en un archivo /////////////////////////
+	// Parametros de ajuste
+	float maxValue = 3.6f; 		// Altura Maxima
+	float velSubida = 5.0f;		// Velocidad de cambio
+	float velBajada = -5.0f;
+	float centroSubida = 1.0f;	// Centrado de la curva = #/2
+	float centroBajada = 6.0f;
 
-	KeyFrame[FrameIndex].movAvion_x = movAvion_x;
-	KeyFrame[FrameIndex].movAvion_y = movAvion_y;
-	KeyFrame[FrameIndex].movAvion_z = movAvion_z;
-	KeyFrame[FrameIndex].giroAvion = giroAvion;
+	float rotacion = 0.0f;
 
-	FrameIndex++;
-
-	// Guardar los frames actualizados en el archivo
-	std::ofstream outFile("KeyFrames.txt", std::ios::app);
-
-	outFile << "KeyFrame[" << FrameIndex << "].movAvion_x = " << movAvion_x << ".0f;\n";
-	outFile << "KeyFrame[" << FrameIndex << "].movAvion_y = " << movAvion_y << ".0f;\n";
-	outFile << "KeyFrame[" << FrameIndex << "].giroAvion = " << giroAvion << ".0f;\n\n";
-
-	outFile.close();
-	printf("\nFrame guardado. Total de frames: %d\n", FrameIndex);
-
-}
-
-void resetElements(void) //Tecla 0
-{
-
-	movAvion_x = KeyFrame[0].movAvion_x;
-	movAvion_x = KeyFrame[0].movAvion_y;
-	movAvion_z = KeyFrame[0].movAvion_z;
-	giroAvion = KeyFrame[0].giroAvion;
-}
-
-void interpolation(void)
-{
-	KeyFrame[playIndex].movAvion_xInc = (KeyFrame[playIndex + 1].movAvion_x - KeyFrame[playIndex].movAvion_x) / i_max_steps;
-	KeyFrame[playIndex].movAvion_yInc = (KeyFrame[playIndex + 1].movAvion_y - KeyFrame[playIndex].movAvion_y) / i_max_steps;
-	KeyFrame[playIndex].movAvion_zInc = (KeyFrame[playIndex + 1].movAvion_z - KeyFrame[playIndex].movAvion_z) / i_max_steps;
-	KeyFrame[playIndex].giroAvionInc = (KeyFrame[playIndex + 1].giroAvion - KeyFrame[playIndex].giroAvion) / i_max_steps;
-
-}
-
-
-void animate(void)
-{
-	//Movimiento del objeto con barra espaciadora
-	if (play)
-	{
-		if (i_curr_steps >= i_max_steps) //fin de animación entre frames?
-		{
-			playIndex++;
-			printf("playindex : %d\n", playIndex);
-			if (playIndex > FrameIndex - 2)	//Fin de toda la animación con último frame?
-			{
-				printf("Frame index= %d\n", FrameIndex);
-				printf("termino la animacion\n");
-				playIndex = 0;
-				play = false;
-			}
-			else //Interpolación del próximo cuadro
-			{
-
-				i_curr_steps = 0; //Resetea contador
-				//Interpolar
-				interpolation();
-			}
-		}
-		else
-		{
-			//Dibujar Animación
-			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
-			movAvion_y += KeyFrame[playIndex].movAvion_yInc;
-			movAvion_z += KeyFrame[playIndex].movAvion_zInc;
-			giroAvion += KeyFrame[playIndex].giroAvionInc;
-			i_curr_steps++;
-		}
-
+	// Control de tiempo
+	if (tiempoTranscurrido < 3.5f) {
+		//Subir
+		rotacion = maxValue * (1.0f / (1.0f + exp(-velSubida * (tiempoTranscurrido - (centroSubida)))));
 	}
+	else if (tiempoTranscurrido >= 3.5f && tiempoTranscurrido < 9) {
+		//Bajar
+		rotacion = maxValue * (1.0f / (1.0f + exp(-velBajada * (tiempoTranscurrido - (centroBajada)))));
+	}
+
+	rotacion *= 100;
+
+	// Retornar el valor calculado que oscila entre 0 y 10
+	return rotacion * toRadians;
 }
-
-///////////////* FIN KEYFRAMES*////////////////////////////
-
 
 int main()
 {
@@ -545,9 +438,6 @@ int main()
 	CreateShaders();
 
 	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 50.0f, -50.0f, 0.3f, 0.5f);
-
-	// Cargar frames desde archivo
-	loadFramesFromFile();
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -749,7 +639,7 @@ int main()
 
 	////luz fija
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		1.0f, 2.0f,
+		2.0f, 2.0f,
 		50.0f, 10.0f, 50.0f,
 		0.0f, -5.0f, 0.0f,
 		0.70f, 0.20f, 0.30f,
@@ -819,18 +709,18 @@ int main()
 
 	Personaje = true;
 
-	// Informacion para la terminal sobre KeyFrames 
+	// Animacion personaje casilla
+	float movCasY = 0.0f;
+	float offsetMovCasY = 0.5f;
 
-	printf("\nCamara Personaje: Z\nCamara Aerea: X\nCamara Monopoli: C");
+	float rotCasY = 0.0f;
+	float offsetRotCasY = 0.5f;
 
-	printf("\nTeclas para uso de Keyframes:\n1.-Presionar barra espaciadora para reproducir animacion.\n2.-Presionar 0 para volver a habilitar reproduccion de la animacion\n");
-	printf("3.-Presiona L para guardar frame\n4.-Presiona P para habilitar guardar nuevo frame\n5.-Presiona 1 para mover en X -\n6.-Presiona 2 para habilitar mover en X -\n");
-	printf("7.-Presiona 3 para mover en X +\n8.-Presiona 4 para habilitar mover en X +\n9.-Presiona 5 para mover en Y -\n10.-Presiona 6 para habilitar mover en Y -\n");
-	printf("11.-Presiona 7 para mover en Y +\n12.-Presiona 8 para habilitar mover en Y +\n13.-Presiona 9 para rotar en Y \n14.-Presiona Q para habilitar rotar en Y\n");
-	printf("15.-Presiona E para mover en Z -\n16.-Presiona R para habilitar mover en Z -\n17.-Presiona T para mover en Z +\n18.-Presiona Y para habilitar mover en Z +\n\n");
-
-	// Posicion de la nave 
-	glm::vec3 posDoctorStrange = glm::vec3(0.0f, 0.0f, 0.0f);
+	// Control de Tiempo
+	tIni = 0.0f;
+	tFin = 0.0f;
+	tiempoAcumulado = 0.0f;
+	Animacion = false;
 
 
 	////Loop mientras no se cierra la ventana
@@ -844,14 +734,6 @@ int main()
 			despl_solx, despl_soly, despl_solz);
 
 		glfwPollEvents();
-
-		//-------Para Keyframes
-		inputKeyframes(mainWindow.getsKeys());
-		animate();
-
-		//////////////////////////////////////
-
-
 		//CAMBIO DE CAMARAS//
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_Z)) {
 			if (estado < 10) {
@@ -915,6 +797,9 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
+		//Tiempo durante la ejecucion
+		tiempoAcumulado = glfwGetTime();;
+
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true) {
 			salto = 3.5;
 			srand((unsigned)time(NULL));
@@ -934,6 +819,10 @@ int main()
 			//////////////////////////////////////
 
 			estado += (c + c_2);
+
+			// Animacion
+
+			Animacion = true;
 
 			// Verifica si ha alcanzado o superado las 40 casillas
 			if (estado >= 40) {
@@ -1149,363 +1038,637 @@ int main()
 
 		//			Personajes				//
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 5.0f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 39) {
-			Cortana.RenderModel();
+
+			//Inicializa Animacion
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-33.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
+			//Renderizado
 			Cortana.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 38) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-25.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Inquizidor.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-16.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 37) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-16.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Noble6.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-7.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 36) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-7.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			SetoKaiba.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-0.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 35) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-0.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Bakura.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(8.5f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 34) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(8.5f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			YugiMoto.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(17.0f, 2.7f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 33) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(17.0f, -7.3f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			DoctorOctopus.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 32) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(25.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			DuendeVerde.RenderModel();
 		}	
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 3.2f, 35.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 31) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			DoctorStrange.RenderModel();
 		}
 
 		//				Fauna				//
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 1.0f, 35.0f));
-		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 30) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -9.0f + MovimientoAvanzado(tIni, tiempoAcumulado), 35.0f));
+			model = glm::rotate(model, 45 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Guta.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 3.2f, 33.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 29) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 33.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Yanmee.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 3.2f, 25.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 28) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 25.0f));
+			model = glm::rotate(model, RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Moa.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 1.0f, 17.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 27) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -9.0f + MovimientoAvanzado(tIni, tiempoAcumulado), 17.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Rana.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 2.0f, 8.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 26) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -8.0f + MovimientoAvanzado(tIni, tiempoAcumulado), 8.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Perro.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 3.1f, 0.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 25) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -6.9f + MovimientoAvanzado(tIni, tiempoAcumulado), 0.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Pinguino.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 1.9f, -7.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 24) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -8.1f + MovimientoAvanzado(tIni, tiempoAcumulado), -7.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Gato.RenderModel();
 		}
 
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, -1.0f, -16.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 23) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -11.0f + MovimientoAvanzado(tIni, tiempoAcumulado), -16.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Lagarto.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 2.1f, -24.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 22) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -7.9f + MovimientoAvanzado(tIni, tiempoAcumulado), -24.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Paloma.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 0.0f, -33.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 21) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -10.0f + MovimientoAvanzado(tIni, tiempoAcumulado), -33.0f));
+			model = glm::rotate(model, 90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Arana.RenderModel();
 		}
 
 		//				Flora				//
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(35.0f, 3.2f, -35.0f));
-		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 20) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 45 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Seta.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 11) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-33.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			RobleRojo.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, 1.6f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 12) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-25.0f, -8.4f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Cerezo.RenderModel();
 		}
 		
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-16.0f, 1.6f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 13) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-16.0f, -8.4f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Rododendro.RenderModel();
 		}
 		
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-8.0f, -0.9f, -32.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 14) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-8.0f, -10.9f + MovimientoAvanzado(tIni, tiempoAcumulado), -32.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			JardinRosas.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-0.0f, -0.4f, -32.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 15) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-0.0f, -10.4f + MovimientoAvanzado(tIni, tiempoAcumulado), -32.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Bosque.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(8.5f, 2.7f, -33.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 16) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(8.5f, -7.3f + MovimientoAvanzado(tIni, tiempoAcumulado), -33.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Islas.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(17.0f, 3.2f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 17) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(17.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			KibaTorcido.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, 3.2f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 18) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(25.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			RobleReach.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(33.0f, 1.5f, -35.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 19) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(33.0f, -8.5f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, 180 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Xenoflora.RenderModel();
 		}
 
 		//			Edificios				//
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-35.0f, 3.2f, -35.0f));
-		model = glm::rotate(model, -45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		if (estado == 10) {
-			Anillo.RenderModel();
-		}
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-35.0f, -0.8f, 33.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 1) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-35.0f, -10.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 33.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Puente.RenderModel();
 		}
-		
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-35.0f, 3.2f, 25.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	
 		if (estado == 2) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 25.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Estatua.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-31.0f, 2.1f, 17.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 3){
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-31.0f, -7.9f + MovimientoAvanzado(tIni, tiempoAcumulado), 17.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Universidad.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 2.0f, 8.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 4) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-33.0f, -8.0f + MovimientoAvanzado(tIni, tiempoAcumulado), 8.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Cafeteria.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-32.0f, 3.2f, 0.5f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 5) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-32.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), 0.5f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Corporation.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-32.0f, 0.9f, -8.5f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 6) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-32.0f, -9.1f + MovimientoAvanzado(tIni, tiempoAcumulado), -8.5f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Kingdom.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-35.0f, 3.2f, -16.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 7) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -16.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Instituto.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, 3.2f, -25.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 8) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-33.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -25.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			GranCaridad.RenderModel();
 		}
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-33.0f, -1.05f, -33.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		if (estado == 9) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-33.0f, -11.05f + MovimientoAvanzado(tIni, tiempoAcumulado), -33.0f));
+			model = glm::rotate(model, -90 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 			Arca.RenderModel();
+		}
+
+		
+		if (estado == 10) {
+
+			if (Animacion) {
+				Animacion = false;
+				tIni = tiempoAcumulado;
+			}
+
+			model = glm::mat4(1.0);
+			model = glm::translate(model, glm::vec3(-35.0f, -6.8f + MovimientoAvanzado(tIni, tiempoAcumulado), -35.0f));
+			model = glm::rotate(model, -45 * toRadians + RotacionAvanzada(tIni, tiempoAcumulado), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
+			Anillo.RenderModel();
 		}
 
 		//////////////////////////////////////
@@ -1856,22 +2019,6 @@ int main()
 		}
 
 
-		// Modelo para keyFrames
-
-		model = glm::mat4(1.0);
-		posDoctorStrange = glm::vec3(posXavion + movAvion_x, posYavion + movAvion_y, posZavion + movAvion_z);
-		model = glm::translate(model, posDoctorStrange);
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		//color = glm::vec3(0.0f, 1.0f, 0.0f);
-		//glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		DoctorStrange.RenderModel();
-
-
 		glUseProgram(0);
 
 		mainWindow.swapBuffers();
@@ -1880,236 +2027,3 @@ int main()
 	return 0;
 }
 
-void inputKeyframes(bool* keys)
-{
-	if (keys[GLFW_KEY_SPACE])
-	{
-		if (reproduciranimacion < 1)
-		{
-			if (play == false && (FrameIndex > 1))
-			{
-				resetElements();
-				//First Interpolation				
-				interpolation();
-				play = true;
-				playIndex = 0;
-				i_curr_steps = 0;
-				reproduciranimacion++;
-				printf("\n presiona 0 para habilitar reproducir de nuevo la animación'\n");
-				habilitaranimacion = 0;
-
-			}
-			else
-			{
-				play = false;
-
-			}
-		}
-	}
-	if (keys[GLFW_KEY_0])
-	{
-		if (habilitaranimacion < 1 && reproduciranimacion>0)
-		{
-			printf("Ya puedes reproducir de nuevo la animación con la tecla de barra espaciadora'\n");
-			reproduciranimacion = 0;
-			habilitaranimacion++;
-
-		}
-	}
-
-	if (keys[GLFW_KEY_L])
-	{
-		if (guardoFrame < 1)
-		{
-			saveFrame();
-			printf("movAvion_x es: %f\n", movAvion_x);
-			printf("movAvion_y es: %f\n", movAvion_y);
-			printf("movAvion_z es: %f\n", movAvion_z);
-			printf("rotAvion es: %f\n", giroAvion);
-			printf("presiona P para habilitar guardar otro frame'\n");
-			guardoFrame++;
-			reinicioFrame = 0;
-		}
-	}
-	if (keys[GLFW_KEY_P])
-	{
-		if (reinicioFrame < 1)
-		{
-			guardoFrame = 0;
-			printf("Ya puedes guardar otro frame presionando la tecla L'\n");
-			reinicioFrame++;
-		}
-	}
-
-	// X -
-
-	if (keys[GLFW_KEY_1])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			movAvion_x -= 5.0f;
-			printf("\n movAvion_x es: %f\n", movAvion_x);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 2 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_2])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 1\n");
-		}
-	}
-
-	// X +
-
-	if (keys[GLFW_KEY_3])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			movAvion_x += 5.0f;
-			printf("\n movAvion_x es: %f\n", movAvion_x);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 4 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_4])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 3\n");
-		}
-	}
-
-	// Y -
-
-	if (keys[GLFW_KEY_5])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_y -= 5.0f;
-			printf("\n movAvion_y es: %f\n", movAvion_y);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 6 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_6])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 5\n");
-		}
-	}
-
-	// Y +
-
-	if (keys[GLFW_KEY_7])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_y += 5.0f;
-			printf("\n movAvion_y es: %f\n", movAvion_y);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla 6 para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_8])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 7\n");
-		}
-	}
-
-	//Rotacion
-
-	if (keys[GLFW_KEY_9])
-	{
-		if (ciclo < 1)
-		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			giroAvion += 15.0f;
-			printf("\n rotAvion es: %f\n", giroAvion);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla Q para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_Q])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla 9\n");
-		}
-	}
-
-	// Z -
-
-	if (keys[GLFW_KEY_E])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_z -= 5.0f;
-			printf("\n movAvion_z es: %f\n", movAvion_z);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla R para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_R])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla E\n");
-		}
-	}
-
-	// Z +
-
-	if (keys[GLFW_KEY_T])
-	{
-		if (ciclo < 1)
-		{
-			movAvion_z += 5.0f;
-			printf("\n movAvion_z es: %f\n", movAvion_z);
-			ciclo++;
-			ciclo2 = 0;
-			printf("\n Presiona la tecla Y para poder habilitar la variable\n");
-		}
-
-	}
-	if (keys[GLFW_KEY_Y])
-	{
-		if (ciclo2 < 1)
-		{
-			ciclo = 0;
-			ciclo2++;		//Correccion para que solo entre una vez al ciclo
-			printf("\n Ya puedes modificar tu variable presionando la tecla T\n");
-		}
-	}
-
-}
