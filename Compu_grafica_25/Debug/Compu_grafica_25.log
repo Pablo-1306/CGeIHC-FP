@@ -5,10 +5,21 @@ D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(12,
 D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   (compilando archivo de origen "Proyecto_Final.cpp")
   
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(677,18): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(679,19): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(682,19): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(690,18): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(697,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(699,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+<<<<<<< HEAD
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(905,18): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(907,19): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(910,19): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(918,18): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(925,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(927,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+=======
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(770,18): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(772,19): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(775,19): warning C4305: '+=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(783,18): warning C4305: '-=': truncamiento de 'double' a 'float'
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(790,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(792,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Proyecto_Final.cpp(796,32): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+>>>>>>> 3b3fc5e7d3fd4c616ca3a6844d3dd96e7bdbc1d7
   Compu_grafica_25.vcxproj -> D:\Brandon Hernandez\Documents\Escuela\UNAM\CGIHC\Proyecto\Proyecto\Debug\Compu_grafica_25.exe
