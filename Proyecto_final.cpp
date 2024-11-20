@@ -69,7 +69,7 @@ int pasosEnTablero;
 float posXDado8 = -20.0, posYDado8 = 10.0, posZDado8 = 20.0;
 bool finaliza;
 bool avanza;
-int posxPersonaje = -45, poszPersonaje = 45 ;
+int posxPersonaje = -45, poszPersonaje = 45;
 float suma;
 bool v1 = false, v2 = false, v3 = true;
 float despl_solx = 0.0f, despl_soly = 0.0f, despl_solz = -1.0f;
@@ -253,7 +253,7 @@ Texture SelecCasilla_39;
 Model dado8;
 Model Jefe;
 Model Spiderman;
-/*
+
 //			Personajes				//
 
 Model Cortana;
@@ -315,7 +315,7 @@ Model Edificio;
 Model Scarag;
 Model EstacionEspacial;
 Model StarFighter;
-*/
+
 //////////////////////////////////////
 //////////////////////////////////////
 
@@ -414,30 +414,6 @@ void CreateObjects()
 		10.0f, 0.0f, 10.0f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
 	};
 
-	unsigned int casillaIndices[] = {
-		0, 2, 1,
-		1, 2, 3
-	};
-
-	GLfloat casillaVertices[] = {
-		-6.5f, 0.0f, -4.2f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		6.5f, 0.0f, -4.2f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
-		-6.5f, 0.0f, 4.2f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		6.5f, 0.0f, 4.2f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
-	};
-
-	unsigned int esquinaIndices[] = {
-	0, 2, 1,
-	1, 2, 3
-	};
-
-	GLfloat esquinaVertices[] = {
-		-6.5f, 0.0f, -6.5f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		6.5f, 0.0f, -6.5f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
-		-6.5f, 0.0f, 6.5f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		6.5f, 0.0f, 6.5f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
-	};
-
 	unsigned int vegetacionIndices[] = {
 	   0, 1, 2,
 	   0, 2, 3,
@@ -480,6 +456,30 @@ void CreateObjects()
 		0.0f, 0.0f, -0.5f,		0.4855f, 0.07f,			0.0f, 0.0f, 1.0f,
 		0.5f, 0.0f, 0.5f,		0.698f, 0.465f,		-1.0f, 0.0f, -1.0f,
 		-0.5f, 0.0f, 0.5f,		0.276f, 0.465f,			0.0f, 0.0f, 1.0f,
+	};
+
+	unsigned int casillaIndices[] = {
+	0, 2, 1,
+	1, 2, 3
+	};
+
+	GLfloat casillaVertices[] = {
+		-6.5f, 0.0f, -4.2f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, -4.2f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
+		-6.5f, 0.0f, 4.2f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, 4.2f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
+	};
+
+	unsigned int esquinaIndices[] = {
+	0, 2, 1,
+	1, 2, 3
+	};
+
+	GLfloat esquinaVertices[] = {
+		-6.5f, 0.0f, -6.5f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, -6.5f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
+		-6.5f, 0.0f, 6.5f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, 6.5f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
 	};
 
 	Mesh* obj1 = new Mesh();
@@ -598,7 +598,7 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 50.0f, -50.0f, 0.3f, 0.5f);
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -50.0f, -50.0f, 0.3f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -608,6 +608,10 @@ int main()
 	plainTexture.LoadTextureA();
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
+	TableroTexture = Texture("Textures/Tablero.tga");
+	TableroTexture.LoadTextureA();
+	TableroNoche = Texture("Textures/TableroNoche.tga");
+	TableroNoche.LoadTextureA();
 	Letrero = Texture("Textures/letrero.tga");
 	Letrero.LoadTextureA();
 	Dado4 = Texture("Textures/dado4.png");
@@ -917,12 +921,6 @@ int main()
 	SelecCasilla_39.LoadTextureA();
 
 	//////////////////////////////////////
-	//////////////////////////////////////
-
-	Helicopero = Model();
-	Helicopero.LoadModel("Models/MRX22 Recon Flyer.obj");
-
-	//////////////////////////////////////
 	//		Declaracion de Modelos		//
 	//////////////////////////////////////
 
@@ -933,7 +931,7 @@ int main()
 	Spiderman.LoadModel("Models/Spiderman.obj");
 
 	//			Personajes				//
-	/*
+
 	Cortana = Model();
 	Cortana.LoadModel("Models/Personajes/Cortana.obj");
 	Inquizidor = Model();
@@ -1040,7 +1038,7 @@ int main()
 	Scarag.LoadModel("Models/Ciudad/Scarag.obj");
 	StarFighter = Model();
 	StarFighter.LoadModel("Models/Ciudad/NaveTriangular.obj");
-	*/
+
 	//               DADO                //
 
 	dado8 = Model();
@@ -1198,12 +1196,15 @@ int main()
 		//CAMBIO DE CAMARAS//
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_Z)) {
 			if (estado < 10) {
-				camera = Camera(glm::vec3(movX, 7.0f, movZ + 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f+rotY, 0.0f, 0.3f, 0.5f);
-			}else if (estado < 20) {
+				camera = Camera(glm::vec3(movX, 7.0f, movZ + 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f + rotY, 0.0f, 0.3f, 0.5f);
+			}
+			else if (estado < 20) {
 				camera = Camera(glm::vec3(movX - 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
-			}else if (estado < 30) {
+			}
+			else if (estado < 30) {
 				camera = Camera(glm::vec3(movX, 7.0f, movZ - 15), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f + rotY, 0.0f, 0.3f, 0.5f);
-			}else if (estado < 40) {
+			}
+			else if (estado < 40) {
 				camera = Camera(glm::vec3(movX + 15, 7.0f, movZ), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f - rotY, 0.0f, 0.3f, 0.5f);
 			}
 			v1 = true;
@@ -1222,13 +1223,6 @@ int main()
 			v1 = false;
 			v2 = v1;
 		}
-		//DEBUG
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_V)) {
-			camera = Camera(glm::vec3(0.0f, 20.0f, 00.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, -90.0f, 0.3f, 0.5f);
-			v2 = true;
-			v1 = false;
-			v3 = v1;
-		}
 
 		if (v1) {
 			//Recibir eventos del usuario
@@ -1244,14 +1238,14 @@ int main()
 			if (despl_solz > -0.7 && despl_solz < 0 && despl_soly > -1) {
 				despl_soly -= 0.00002;
 			}
-			else if(despl_solz >= -0.000477 && despl_solz < 0.7) {
+			else if (despl_solz >= -0.000477 && despl_solz < 0.7) {
 				despl_soly += 0.00002;
 			}
-			else if(despl_solz > 0.7 || despl_solz > -0.7){
+			else if (despl_solz > 0.7 || despl_solz > -0.7) {
 				despl_soly = 0;
 			}
 		}
-		else if(despl_solz > -1.1){
+		else if (despl_solz > -1.1) {
 			dia = false;
 			despl_solz -= 0.0003;
 		}
@@ -1455,6 +1449,14 @@ int main()
 
 		meshList[2]->RenderMesh();
 
+		///// Tablero ///////
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -1.8f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+
 		//Instancia del dado de 8 caras 
 		model = glm::mat4(1.0);
 		posDado8 = glm::vec3(posXDado8 - salto, movDado8, posZDado8);
@@ -1487,7 +1489,7 @@ int main()
 		//////////////////////////////////////
 
 		//			Personajes				//
-		/*
+
 		if (estado == 39) {
 
 			//Inicializa Animacion
@@ -1502,7 +1504,7 @@ int main()
 			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 
-			//Renderizado del modelo
+			//Renderizado
 			Cortana.RenderModel();
 		}
 
@@ -1616,7 +1618,7 @@ int main()
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 
 			DuendeVerde.RenderModel();
-		}	
+		}
 
 		if (estado == 31) {
 
@@ -1845,7 +1847,7 @@ int main()
 
 			Cerezo.RenderModel();
 		}
-		
+
 		if (estado == 13) {
 
 			if (Animacion) {
@@ -1861,7 +1863,7 @@ int main()
 
 			Rododendro.RenderModel();
 		}
-		
+
 		if (estado == 14) {
 
 			if (Animacion) {
@@ -1960,10 +1962,6 @@ int main()
 
 		//			Edificios				//
 
-		if (estado == 0) {
-			//Inicio
-		}
-
 		if (estado == 1) {
 
 			if (Animacion) {
@@ -1979,7 +1977,7 @@ int main()
 
 			Puente.RenderModel();
 		}
-	
+
 		if (estado == 2) {
 
 			if (Animacion) {
@@ -1996,7 +1994,7 @@ int main()
 			Estatua.RenderModel();
 		}
 
-		if (estado == 3){
+		if (estado == 3) {
 
 			if (Animacion) {
 				Animacion = false;
@@ -2108,7 +2106,7 @@ int main()
 			Arca.RenderModel();
 		}
 
-		
+
 		if (estado == 10) {
 
 			if (Animacion) {
@@ -2163,7 +2161,7 @@ int main()
 		Apartamento.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-50.0f, 40.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-50.0f, 45.0f, 0.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -2263,7 +2261,7 @@ int main()
 
 		//////////////////////////////////////
 		//////////////////////////////////////
-		*/
+
 		//	Modelos
 
 		// Halo
@@ -2278,7 +2276,7 @@ int main()
 			PosicionPersonaje = glm::vec3(model[3]) + glm::vec3(0.0f, 10.0f, 0.0f);
 			Jefe.RenderModel();
 		}
-		
+
 		// Spiderman
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 3.2f, 0.0f));
@@ -2291,7 +2289,7 @@ int main()
 			PosicionPersonaje = glm::vec3(model[3]) + glm::vec3(0.0f, 10.0f, 0.0f);
 			Spiderman.RenderModel();
 		}
-		
+
 		//////////////////////////////////////
 		//		Control del Tablero			//
 		//////////////////////////////////////
@@ -3258,7 +3256,6 @@ int main()
 
 		// Fin
 
-
 		glUseProgram(0);
 
 		mainWindow.swapBuffers();
@@ -3266,4 +3263,3 @@ int main()
 
 	return 0;
 }
-
