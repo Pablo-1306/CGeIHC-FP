@@ -107,9 +107,138 @@ float rotObjetivo;
 
 bool Personaje;
 
-// Tablero
+//////////////////////////////////////
+//		Declaracion de Texturas		//
+//////////////////////////////////////
+
 Texture TableroTexture;
+
+Texture TableroDia;
 Texture TableroNoche;
+
+Texture DiaCasilla_00;
+Texture NocheCasilla_00;
+Texture SelecCasilla_00;
+Texture DiaCasilla_01;
+Texture NocheCasilla_01;
+Texture SelecCasilla_01;
+Texture DiaCasilla_02;
+Texture NocheCasilla_02;
+Texture SelecCasilla_02;
+Texture DiaCasilla_03;
+Texture NocheCasilla_03;
+Texture SelecCasilla_03;
+Texture DiaCasilla_04;
+Texture NocheCasilla_04;
+Texture SelecCasilla_04;
+Texture DiaCasilla_05;
+Texture NocheCasilla_05;
+Texture SelecCasilla_05;
+Texture DiaCasilla_06;
+Texture NocheCasilla_06;
+Texture SelecCasilla_06;
+Texture DiaCasilla_07;
+Texture NocheCasilla_07;
+Texture SelecCasilla_07;
+Texture DiaCasilla_08;
+Texture NocheCasilla_08;
+Texture SelecCasilla_08;
+Texture DiaCasilla_09;
+Texture NocheCasilla_09;
+Texture SelecCasilla_09;
+//////////////////////////////////////
+Texture DiaCasilla_10;
+Texture NocheCasilla_10;
+Texture SelecCasilla_10;
+Texture DiaCasilla_11;
+Texture NocheCasilla_11;
+Texture SelecCasilla_11;
+Texture DiaCasilla_12;
+Texture NocheCasilla_12;
+Texture SelecCasilla_12;
+Texture DiaCasilla_13;
+Texture NocheCasilla_13;
+Texture SelecCasilla_13;
+Texture DiaCasilla_14;
+Texture NocheCasilla_14;
+Texture SelecCasilla_14;
+Texture DiaCasilla_15;
+Texture NocheCasilla_15;
+Texture SelecCasilla_15;
+Texture DiaCasilla_16;
+Texture NocheCasilla_16;
+Texture SelecCasilla_16;
+Texture DiaCasilla_17;
+Texture NocheCasilla_17;
+Texture SelecCasilla_17;
+Texture DiaCasilla_18;
+Texture NocheCasilla_18;
+Texture SelecCasilla_18;
+Texture DiaCasilla_19;
+Texture NocheCasilla_19;
+Texture SelecCasilla_19;
+//////////////////////////////////////
+Texture DiaCasilla_20;
+Texture NocheCasilla_20;
+Texture SelecCasilla_20;
+Texture DiaCasilla_21;
+Texture NocheCasilla_21;
+Texture SelecCasilla_21;
+Texture DiaCasilla_22;
+Texture NocheCasilla_22;
+Texture SelecCasilla_22;
+Texture DiaCasilla_23;
+Texture NocheCasilla_23;
+Texture SelecCasilla_23;
+Texture DiaCasilla_24;
+Texture NocheCasilla_24;
+Texture SelecCasilla_24;
+Texture DiaCasilla_25;
+Texture NocheCasilla_25;
+Texture SelecCasilla_25;
+Texture DiaCasilla_26;
+Texture NocheCasilla_26;
+Texture SelecCasilla_26;
+Texture DiaCasilla_27;
+Texture NocheCasilla_27;
+Texture SelecCasilla_27;
+Texture DiaCasilla_28;
+Texture NocheCasilla_28;
+Texture SelecCasilla_28;
+Texture DiaCasilla_29;
+Texture NocheCasilla_29;
+Texture SelecCasilla_29;
+//////////////////////////////////////
+Texture DiaCasilla_30;
+Texture NocheCasilla_30;
+Texture SelecCasilla_30;
+Texture DiaCasilla_31;
+Texture NocheCasilla_31;
+Texture SelecCasilla_31;
+Texture DiaCasilla_32;
+Texture NocheCasilla_32;
+Texture SelecCasilla_32;
+Texture DiaCasilla_33;
+Texture NocheCasilla_33;
+Texture SelecCasilla_33;
+Texture DiaCasilla_34;
+Texture NocheCasilla_34;
+Texture SelecCasilla_34;
+Texture DiaCasilla_35;
+Texture NocheCasilla_35;
+Texture SelecCasilla_35;
+Texture DiaCasilla_36;
+Texture NocheCasilla_36;
+Texture SelecCasilla_36;
+Texture DiaCasilla_37;
+Texture NocheCasilla_37;
+Texture SelecCasilla_37;
+Texture DiaCasilla_38;
+Texture NocheCasilla_38;
+Texture SelecCasilla_38;
+Texture DiaCasilla_39;
+Texture NocheCasilla_39;
+Texture SelecCasilla_39;
 
 //////////////////////////////////////
 //		Declaracion de Modelos		//
@@ -118,7 +247,7 @@ Texture TableroNoche;
 Model dado8;
 Model Jefe;
 Model Spiderman;
-
+/*
 //			Personajes				//
 
 Model Cortana;
@@ -180,7 +309,7 @@ Model Edificio;
 Model Scarag;
 Model EstacionEspacial;
 Model StarFighter;
-
+*/
 //////////////////////////////////////
 //////////////////////////////////////
 
@@ -279,6 +408,30 @@ void CreateObjects()
 		10.0f, 0.0f, 10.0f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
 	};
 
+	unsigned int casillaIndices[] = {
+		0, 2, 1,
+		1, 2, 3
+	};
+
+	GLfloat casillaVertices[] = {
+		-6.5f, 0.0f, -4.2f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, -4.2f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
+		-6.5f, 0.0f, 4.2f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, 4.2f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
+	};
+
+	unsigned int esquinaIndices[] = {
+	0, 2, 1,
+	1, 2, 3
+	};
+
+	GLfloat esquinaVertices[] = {
+		-6.5f, 0.0f, -6.5f,		0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, -6.5f,		0.0f, 1.0f,		0.0f, -1.0f, 0.0f,
+		-6.5f, 0.0f, 6.5f,		1.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		6.5f, 0.0f, 6.5f,		1.0f, 1.0f,		0.0f, -1.0f, 0.0f
+	};
+
 	unsigned int vegetacionIndices[] = {
 	   0, 1, 2,
 	   0, 2, 3,
@@ -346,6 +499,14 @@ void CreateObjects()
 	Mesh* dado4 = new Mesh();
 	dado4->CreateMesh(dado4Vertices, dado4Indices, 96, 12);
 	meshList.push_back(dado4);
+
+	Mesh* obj6 = new Mesh();
+	obj6->CreateMesh(casillaVertices, casillaIndices, 32, 6);
+	meshList.push_back(obj6);
+
+	Mesh* obj7 = new Mesh();
+	obj7->CreateMesh(esquinaVertices, esquinaIndices, 32, 6);
+	meshList.push_back(obj7);
 
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
@@ -442,19 +603,319 @@ int main()
 	plainTexture.LoadTextureA();
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
-	TableroTexture = Texture("Textures/Tablero.tga");
-	TableroTexture.LoadTextureA();
-	TableroNoche= Texture("Textures/TableroNoche.tga");
-	TableroNoche.LoadTextureA();
 	Letrero = Texture("Textures/letrero.tga");
 	Letrero.LoadTextureA();
 	Dado4 = Texture("Textures/dado4.png");
 	Dado4.LoadTextureA();
 
+	//////////////////////////////////////
+	//		Declaracion de Texturas		//
+	//////////////////////////////////////
+
+	//			Referencia				//
+
+	TableroTexture = Texture("Textures/Tablero.tga");
+	TableroTexture.LoadTextureA();
+
+	//				Centro				//
+
+	TableroDia = Texture("Textures/Tablero/Imagen/Dia.png");
+	TableroDia.LoadTextureA();
+	TableroNoche = Texture("Textures/Tablero/Imagen/Noche.png");
+	TableroNoche.LoadTextureA();
+
+	//			Edificios				//
+	DiaCasilla_00 = Texture("Textures/Tablero/Casilla00/Dia.png");
+	DiaCasilla_00.LoadTextureA();
+	NocheCasilla_00 = Texture("Textures/Tablero/Casilla00/Noche.png");
+	NocheCasilla_00.LoadTextureA();
+	SelecCasilla_00 = Texture("Textures/Tablero/Casilla00/Seleccionado.png");
+	SelecCasilla_00.LoadTextureA();
+
+	DiaCasilla_01 = Texture("Textures/Tablero/Casilla01/Dia.png");
+	DiaCasilla_01.LoadTextureA();
+	NocheCasilla_01 = Texture("Textures/Tablero/Casilla01/Noche.png");
+	NocheCasilla_01.LoadTextureA();
+	SelecCasilla_01 = Texture("Textures/Tablero/Casilla01/Seleccionado.png");
+	SelecCasilla_01.LoadTextureA();
+
+	DiaCasilla_02 = Texture("Textures/Tablero/Casilla02/Dia.png");
+	DiaCasilla_02.LoadTextureA();
+	NocheCasilla_02 = Texture("Textures/Tablero/Casilla02/Noche.png");
+	NocheCasilla_02.LoadTextureA();
+	SelecCasilla_02 = Texture("Textures/Tablero/Casilla02/Seleccionado.png");
+	SelecCasilla_02.LoadTextureA();
+
+	DiaCasilla_03 = Texture("Textures/Tablero/Casilla03/Dia.png");
+	DiaCasilla_03.LoadTextureA();
+	NocheCasilla_03 = Texture("Textures/Tablero/Casilla03/Noche.png");
+	NocheCasilla_03.LoadTextureA();
+	SelecCasilla_03 = Texture("Textures/Tablero/Casilla03/Seleccionado.png");
+	SelecCasilla_03.LoadTextureA();
+
+	DiaCasilla_04 = Texture("Textures/Tablero/Casilla04/Dia.png");
+	DiaCasilla_04.LoadTextureA();
+	NocheCasilla_04 = Texture("Textures/Tablero/Casilla04/Noche.png");
+	NocheCasilla_04.LoadTextureA();
+	SelecCasilla_04 = Texture("Textures/Tablero/Casilla04/Seleccionado.png");
+	SelecCasilla_04.LoadTextureA();
+
+	DiaCasilla_05 = Texture("Textures/Tablero/Casilla05/Dia.png");
+	DiaCasilla_05.LoadTextureA();
+	NocheCasilla_05 = Texture("Textures/Tablero/Casilla05/Noche.png");
+	NocheCasilla_05.LoadTextureA();
+	SelecCasilla_05 = Texture("Textures/Tablero/Casilla05/Seleccionado.png");
+	SelecCasilla_05.LoadTextureA();
+
+	DiaCasilla_06 = Texture("Textures/Tablero/Casilla06/Dia.png");
+	DiaCasilla_06.LoadTextureA();
+	NocheCasilla_06 = Texture("Textures/Tablero/Casilla06/Noche.png");
+	NocheCasilla_06.LoadTextureA();
+	SelecCasilla_06 = Texture("Textures/Tablero/Casilla06/Seleccionado.png");
+	SelecCasilla_06.LoadTextureA();
+
+	DiaCasilla_07 = Texture("Textures/Tablero/Casilla07/Dia.png");
+	DiaCasilla_07.LoadTextureA();
+	NocheCasilla_07 = Texture("Textures/Tablero/Casilla07/Noche.png");
+	NocheCasilla_07.LoadTextureA();
+	SelecCasilla_07 = Texture("Textures/Tablero/Casilla07/Seleccionado.png");
+	SelecCasilla_07.LoadTextureA();
+
+	DiaCasilla_08 = Texture("Textures/Tablero/Casilla08/Dia.png");
+	DiaCasilla_08.LoadTextureA();
+	NocheCasilla_08 = Texture("Textures/Tablero/Casilla08/Noche.png");
+	NocheCasilla_08.LoadTextureA();
+	SelecCasilla_08 = Texture("Textures/Tablero/Casilla08/Seleccionado.png");
+	SelecCasilla_08.LoadTextureA();
+
+	DiaCasilla_09 = Texture("Textures/Tablero/Casilla09/Dia.png");
+	DiaCasilla_09.LoadTextureA();
+	NocheCasilla_09 = Texture("Textures/Tablero/Casilla09/Noche.png");
+	NocheCasilla_09.LoadTextureA();
+	SelecCasilla_09 = Texture("Textures/Tablero/Casilla09/Seleccionado.png");
+	SelecCasilla_09.LoadTextureA();
+
+	DiaCasilla_10 = Texture("Textures/Tablero/Casilla10/Dia.png");
+	DiaCasilla_10.LoadTextureA();
+	NocheCasilla_10 = Texture("Textures/Tablero/Casilla10/Noche.png");
+	NocheCasilla_10.LoadTextureA();
+	SelecCasilla_10 = Texture("Textures/Tablero/Casilla10/Seleccionado.png");
+	SelecCasilla_10.LoadTextureA();
+
+	//			Flora					//
+
+	DiaCasilla_11 = Texture("Textures/Tablero/Casilla11/Dia.png");
+	DiaCasilla_11.LoadTextureA();
+	NocheCasilla_11 = Texture("Textures/Tablero/Casilla11/Noche.png");
+	NocheCasilla_11.LoadTextureA();
+	SelecCasilla_11 = Texture("Textures/Tablero/Casilla11/Seleccionado.png");
+	SelecCasilla_11.LoadTextureA();
+
+	DiaCasilla_12 = Texture("Textures/Tablero/Casilla12/Dia.png");
+	DiaCasilla_12.LoadTextureA();
+	NocheCasilla_12 = Texture("Textures/Tablero/Casilla12/Noche.png");
+	NocheCasilla_12.LoadTextureA();
+	SelecCasilla_12 = Texture("Textures/Tablero/Casilla12/Seleccionado.png");
+	SelecCasilla_12.LoadTextureA();
+
+	DiaCasilla_13 = Texture("Textures/Tablero/Casilla13/Dia.png");
+	DiaCasilla_13.LoadTextureA();
+	NocheCasilla_13 = Texture("Textures/Tablero/Casilla13/Noche.png");
+	NocheCasilla_13.LoadTextureA();
+	SelecCasilla_13 = Texture("Textures/Tablero/Casilla13/Seleccionado.png");
+	SelecCasilla_13.LoadTextureA();
+
+	DiaCasilla_14 = Texture("Textures/Tablero/Casilla14/Dia.png");
+	DiaCasilla_14.LoadTextureA();
+	NocheCasilla_14 = Texture("Textures/Tablero/Casilla14/Noche.png");
+	NocheCasilla_14.LoadTextureA();
+	SelecCasilla_14 = Texture("Textures/Tablero/Casilla14/Seleccionado.png");
+	SelecCasilla_14.LoadTextureA();
+
+	DiaCasilla_15 = Texture("Textures/Tablero/Casilla15/Dia.png");
+	DiaCasilla_15.LoadTextureA();
+	NocheCasilla_15 = Texture("Textures/Tablero/Casilla15/Noche.png");
+	NocheCasilla_15.LoadTextureA();
+	SelecCasilla_15 = Texture("Textures/Tablero/Casilla15/Seleccionado.png");
+	SelecCasilla_15.LoadTextureA();
+
+	DiaCasilla_16 = Texture("Textures/Tablero/Casilla16/Dia.png");
+	DiaCasilla_16.LoadTextureA();
+	NocheCasilla_16 = Texture("Textures/Tablero/Casilla16/Noche.png");
+	NocheCasilla_16.LoadTextureA();
+	SelecCasilla_16 = Texture("Textures/Tablero/Casilla16/Seleccionado.png");
+	SelecCasilla_16.LoadTextureA();
+
+	DiaCasilla_17 = Texture("Textures/Tablero/Casilla17/Dia.png");
+	DiaCasilla_17.LoadTextureA();
+	NocheCasilla_17 = Texture("Textures/Tablero/Casilla17/Noche.png");
+	NocheCasilla_17.LoadTextureA();
+	SelecCasilla_17 = Texture("Textures/Tablero/Casilla17/Seleccionado.png");
+	SelecCasilla_17.LoadTextureA();
+
+	DiaCasilla_18 = Texture("Textures/Tablero/Casilla18/Dia.png");
+	DiaCasilla_18.LoadTextureA();
+	NocheCasilla_18 = Texture("Textures/Tablero/Casilla18/Noche.png");
+	NocheCasilla_18.LoadTextureA();
+	SelecCasilla_18 = Texture("Textures/Tablero/Casilla18/Seleccionado.png");
+	SelecCasilla_18.LoadTextureA();
+
+	DiaCasilla_19 = Texture("Textures/Tablero/Casilla19/Dia.png");
+	DiaCasilla_19.LoadTextureA();
+	NocheCasilla_19 = Texture("Textures/Tablero/Casilla19/Noche.png");
+	NocheCasilla_19.LoadTextureA();
+	SelecCasilla_19 = Texture("Textures/Tablero/Casilla19/Seleccionado.png");
+	SelecCasilla_19.LoadTextureA();
+
+	DiaCasilla_20 = Texture("Textures/Tablero/Casilla20/Dia.png");
+	DiaCasilla_20.LoadTextureA();
+	NocheCasilla_20 = Texture("Textures/Tablero/Casilla20/Noche.png");
+	NocheCasilla_20.LoadTextureA();
+	SelecCasilla_20 = Texture("Textures/Tablero/Casilla20/Seleccionado.png");
+	SelecCasilla_20.LoadTextureA();
+
+	//			Fauna					//
+
+	DiaCasilla_21 = Texture("Textures/Tablero/Casilla21/Dia.png");
+	DiaCasilla_21.LoadTextureA();
+	NocheCasilla_21 = Texture("Textures/Tablero/Casilla21/Noche.png");
+	NocheCasilla_21.LoadTextureA();
+	SelecCasilla_21 = Texture("Textures/Tablero/Casilla21/Seleccionado.png");
+	SelecCasilla_21.LoadTextureA();
+
+	DiaCasilla_22 = Texture("Textures/Tablero/Casilla22/Dia.png");
+	DiaCasilla_22.LoadTextureA();
+	NocheCasilla_22 = Texture("Textures/Tablero/Casilla22/Noche.png");
+	NocheCasilla_22.LoadTextureA();
+	SelecCasilla_22 = Texture("Textures/Tablero/Casilla22/Seleccionado.png");
+	SelecCasilla_22.LoadTextureA();
+
+	DiaCasilla_23 = Texture("Textures/Tablero/Casilla23/Dia.png");
+	DiaCasilla_23.LoadTextureA();
+	NocheCasilla_23 = Texture("Textures/Tablero/Casilla23/Noche.png");
+	NocheCasilla_23.LoadTextureA();
+	SelecCasilla_23 = Texture("Textures/Tablero/Casilla23/Seleccionado.png");
+	SelecCasilla_23.LoadTextureA();
+
+	DiaCasilla_24 = Texture("Textures/Tablero/Casilla24/Dia.png");
+	DiaCasilla_24.LoadTextureA();
+	NocheCasilla_24 = Texture("Textures/Tablero/Casilla24/Noche.png");
+	NocheCasilla_24.LoadTextureA();
+	SelecCasilla_24 = Texture("Textures/Tablero/Casilla24/Seleccionado.png");
+	SelecCasilla_24.LoadTextureA();
+
+	DiaCasilla_25 = Texture("Textures/Tablero/Casilla25/Dia.png");
+	DiaCasilla_25.LoadTextureA();
+	NocheCasilla_25 = Texture("Textures/Tablero/Casilla25/Noche.png");
+	NocheCasilla_25.LoadTextureA();
+	SelecCasilla_25 = Texture("Textures/Tablero/Casilla25/Seleccionado.png");
+	SelecCasilla_25.LoadTextureA();
+
+	DiaCasilla_26 = Texture("Textures/Tablero/Casilla26/Dia.png");
+	DiaCasilla_26.LoadTextureA();
+	NocheCasilla_26 = Texture("Textures/Tablero/Casilla26/Noche.png");
+	NocheCasilla_26.LoadTextureA();
+	SelecCasilla_26 = Texture("Textures/Tablero/Casilla26/Seleccionado.png");
+	SelecCasilla_26.LoadTextureA();
+
+	DiaCasilla_27 = Texture("Textures/Tablero/Casilla27/Dia.png");
+	DiaCasilla_27.LoadTextureA();
+	NocheCasilla_27 = Texture("Textures/Tablero/Casilla27/Noche.png");
+	NocheCasilla_27.LoadTextureA();
+	SelecCasilla_27 = Texture("Textures/Tablero/Casilla27/Seleccionado.png");
+	SelecCasilla_27.LoadTextureA();
+
+	DiaCasilla_28 = Texture("Textures/Tablero/Casilla28/Dia.png");
+	DiaCasilla_28.LoadTextureA();
+	NocheCasilla_28 = Texture("Textures/Tablero/Casilla28/Noche.png");
+	NocheCasilla_28.LoadTextureA();
+	SelecCasilla_28 = Texture("Textures/Tablero/Casilla28/Seleccionado.png");
+	SelecCasilla_28.LoadTextureA();
+
+	DiaCasilla_29 = Texture("Textures/Tablero/Casilla29/Dia.png");
+	DiaCasilla_29.LoadTextureA();
+	NocheCasilla_29 = Texture("Textures/Tablero/Casilla29/Noche.png");
+	NocheCasilla_29.LoadTextureA();
+	SelecCasilla_29 = Texture("Textures/Tablero/Casilla29/Seleccionado.png");
+	SelecCasilla_29.LoadTextureA();
+
+	DiaCasilla_30 = Texture("Textures/Tablero/Casilla30/Dia.png");
+	DiaCasilla_30.LoadTextureA();
+	NocheCasilla_30 = Texture("Textures/Tablero/Casilla30/Noche.png");
+	NocheCasilla_30.LoadTextureA();
+	SelecCasilla_30 = Texture("Textures/Tablero/Casilla30/Seleccionado.png");
+	SelecCasilla_30.LoadTextureA();
+
+	//			Personajes				//
+
+	DiaCasilla_31 = Texture("Textures/Tablero/Casilla31/Dia.png");
+	DiaCasilla_31.LoadTextureA();
+	NocheCasilla_31 = Texture("Textures/Tablero/Casilla31/Noche.png");
+	NocheCasilla_31.LoadTextureA();
+	SelecCasilla_31 = Texture("Textures/Tablero/Casilla31/Seleccionado.png");
+	SelecCasilla_31.LoadTextureA();
+
+	DiaCasilla_32 = Texture("Textures/Tablero/Casilla32/Dia.png");
+	DiaCasilla_32.LoadTextureA();
+	NocheCasilla_32 = Texture("Textures/Tablero/Casilla32/Noche.png");
+	NocheCasilla_32.LoadTextureA();
+	SelecCasilla_32 = Texture("Textures/Tablero/Casilla32/Seleccionado.png");
+	SelecCasilla_32.LoadTextureA();
+
+	DiaCasilla_33 = Texture("Textures/Tablero/Casilla33/Dia.png");
+	DiaCasilla_33.LoadTextureA();
+	NocheCasilla_33 = Texture("Textures/Tablero/Casilla33/Noche.png");
+	NocheCasilla_33.LoadTextureA();
+	SelecCasilla_33 = Texture("Textures/Tablero/Casilla33/Seleccionado.png");
+	SelecCasilla_33.LoadTextureA();
+
+	DiaCasilla_34 = Texture("Textures/Tablero/Casilla34/Dia.png");
+	DiaCasilla_34.LoadTextureA();
+	NocheCasilla_34 = Texture("Textures/Tablero/Casilla34/Noche.png");
+	NocheCasilla_34.LoadTextureA();
+	SelecCasilla_34 = Texture("Textures/Tablero/Casilla34/Seleccionado.png");
+	SelecCasilla_34.LoadTextureA();
+
+	DiaCasilla_35 = Texture("Textures/Tablero/Casilla35/Dia.png");
+	DiaCasilla_35.LoadTextureA();
+	NocheCasilla_35 = Texture("Textures/Tablero/Casilla35/Noche.png");
+	NocheCasilla_35.LoadTextureA();
+	SelecCasilla_35 = Texture("Textures/Tablero/Casilla35/Seleccionado.png");
+	SelecCasilla_35.LoadTextureA();
+
+	DiaCasilla_36 = Texture("Textures/Tablero/Casilla36/Dia.png");
+	DiaCasilla_36.LoadTextureA();
+	NocheCasilla_36 = Texture("Textures/Tablero/Casilla36/Noche.png");
+	NocheCasilla_36.LoadTextureA();
+	SelecCasilla_36 = Texture("Textures/Tablero/Casilla36/Seleccionado.png");
+	SelecCasilla_36.LoadTextureA();
+
+	DiaCasilla_37 = Texture("Textures/Tablero/Casilla37/Dia.png");
+	DiaCasilla_37.LoadTextureA();
+	NocheCasilla_37 = Texture("Textures/Tablero/Casilla37/Noche.png");
+	NocheCasilla_37.LoadTextureA();
+	SelecCasilla_37 = Texture("Textures/Tablero/Casilla37/Seleccionado.png");
+	SelecCasilla_37.LoadTextureA();
+
+	DiaCasilla_38 = Texture("Textures/Tablero/Casilla38/Dia.png");
+	DiaCasilla_38.LoadTextureA();
+	NocheCasilla_38 = Texture("Textures/Tablero/Casilla38/Noche.png");
+	NocheCasilla_38.LoadTextureA();
+	SelecCasilla_38 = Texture("Textures/Tablero/Casilla38/Seleccionado.png");
+	SelecCasilla_38.LoadTextureA();
+
+	DiaCasilla_39 = Texture("Textures/Tablero/Casilla39/Dia.png");
+	DiaCasilla_39.LoadTextureA();
+	NocheCasilla_39 = Texture("Textures/Tablero/Casilla39/Noche.png");
+	NocheCasilla_39.LoadTextureA();
+	SelecCasilla_39 = Texture("Textures/Tablero/Casilla39/Seleccionado.png");
+	SelecCasilla_39.LoadTextureA();
+
+	//////////////////////////////////////
+	//////////////////////////////////////
 
 	Helicopero = Model();
 	Helicopero.LoadModel("Models/MRX22 Recon Flyer.obj");
-
 
 	//////////////////////////////////////
 	//		Declaracion de Modelos		//
@@ -467,7 +928,7 @@ int main()
 	Spiderman.LoadModel("Models/Spiderman.obj");
 
 	//			Personajes				//
-
+	/*
 	Cortana = Model();
 	Cortana.LoadModel("Models/Personajes/Cortana.obj");
 	Inquizidor = Model();
@@ -574,7 +1035,7 @@ int main()
 	Scarag.LoadModel("Models/Ciudad/Scarag.obj");
 	StarFighter = Model();
 	StarFighter.LoadModel("Models/Ciudad/NaveTriangular.obj");
-
+	*/
 	//               DADO                //
 
 	dado8 = Model();
@@ -755,6 +1216,13 @@ int main()
 			v3 = true;
 			v1 = false;
 			v2 = v1;
+		}
+		//DEBUG
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_V)) {
+			camera = Camera(glm::vec3(0.0f, 20.0f, 00.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, -90.0f, 0.3f, 0.5f);
+			v2 = true;
+			v1 = false;
+			v3 = v1;
 		}
 
 		if (v1) {
@@ -975,24 +1443,6 @@ int main()
 
 		meshList[2]->RenderMesh();
 
-		///// Tablero ///////
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.8f, 0.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-		if (dia) {
-			TableroTexture.UseTexture();
-		}
-		else {
-			TableroNoche.UseTexture();
-		}
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-
-		meshList[3]->RenderMesh();
-
-
 		//Instancia del dado de 8 caras 
 		model = glm::mat4(1.0);
 		posDado8 = glm::vec3(posXDado8 - salto, movDado8, posZDado8);
@@ -1025,7 +1475,7 @@ int main()
 		//////////////////////////////////////
 
 		//			Personajes				//
-
+		/*
 		if (estado == 39) {
 
 			//Inicializa Animacion
@@ -1040,7 +1490,7 @@ int main()
 			model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 			glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 
-			//Renderizado
+			//Renderizado del modelo
 			Cortana.RenderModel();
 
 		}
@@ -1499,6 +1949,10 @@ int main()
 
 		//			Edificios				//
 
+		if (estado == 0) {
+			//Inicio
+		}
+
 		if (estado == 1) {
 
 			if (Animacion) {
@@ -1720,7 +2174,7 @@ int main()
 
 		//////////////////////////////////////
 		//////////////////////////////////////
-
+		*/
 		//	Modelos
 
 		// Halo
@@ -1748,7 +2202,7 @@ int main()
 			PosicionPersonaje = glm::vec3(model[3]) + glm::vec3(0.0f, 10.0f, 0.0f);
 			Spiderman.RenderModel();
 		}
-
+		
 		//////////////////////////////////////
 		//		Control del Tablero			//
 		//////////////////////////////////////
@@ -1925,6 +2379,792 @@ int main()
 				movZ = 45.0f;
 			}
 		}
+
+		//////////////////////////////////////
+		//		Renderizado de Texturas		//
+		//////////////////////////////////////
+
+		//				Imagen				//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, -1.9f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.8f, 1.0f, 3.8f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+
+		if (dia) {
+			TableroDia.UseTexture();
+		}
+		else {
+			TableroNoche.UseTexture();
+		}
+
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[3]->RenderMesh();
+
+		//			Edificios				//
+
+		//Inicializa la textura
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 44.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+
+		if (estado == 0) {
+			//Textura de casilla seleccionada
+			SelecCasilla_00.UseTexture();
+		}
+		else {
+			//Dia o noche
+			if (dia) {
+				DiaCasilla_00.UseTexture();
+			}
+			else {
+				NocheCasilla_00.UseTexture();
+			}
+		}
+		//Renderiza Textura
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[7]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 33.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 1) {
+			SelecCasilla_01.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_01.UseTexture();
+			}
+			else {
+				NocheCasilla_01.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 25.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 2) {
+			SelecCasilla_02.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_02.UseTexture();
+			}
+			else {
+				NocheCasilla_02.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 16.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 3) {
+			SelecCasilla_03.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_03.UseTexture();
+			}
+			else {
+				NocheCasilla_03.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 8.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 4) {
+			SelecCasilla_04.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_04.UseTexture();
+			}
+			else {
+				NocheCasilla_04.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, 0.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 5) {
+			SelecCasilla_05.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_05.UseTexture();
+			}
+			else {
+				NocheCasilla_05.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, -8.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 6) {
+			SelecCasilla_06.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_06.UseTexture();
+			}
+			else {
+				NocheCasilla_06.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, -16.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 7) {
+			SelecCasilla_07.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_07.UseTexture();
+			}
+			else {
+				NocheCasilla_07.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, -24.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 8) {
+			SelecCasilla_08.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_08.UseTexture();
+			}
+			else {
+				NocheCasilla_08.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, -33.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 9) {
+			SelecCasilla_09.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_09.UseTexture();
+			}
+			else {
+				NocheCasilla_09.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-43.5f, -1.8f, -43.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 10) {
+			SelecCasilla_10.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_10.UseTexture();
+			}
+			else {
+				NocheCasilla_10.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[7]->RenderMesh();
+
+		//				Flora				//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-33.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 11) {
+			SelecCasilla_11.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_11.UseTexture();
+			}
+			else {
+				NocheCasilla_11.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-24.5f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 12) {
+			SelecCasilla_12.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_12.UseTexture();
+			}
+			else {
+				NocheCasilla_12.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-16.2f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 13) {
+			SelecCasilla_13.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_13.UseTexture();
+			}
+			else {
+				NocheCasilla_13.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-8.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 14) {
+			SelecCasilla_14.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_14.UseTexture();
+			}
+			else {
+				NocheCasilla_14.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-0.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 15) {
+			SelecCasilla_15.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_15.UseTexture();
+			}
+			else {
+				NocheCasilla_15.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(8.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 16) {
+			SelecCasilla_16.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_16.UseTexture();
+			}
+			else {
+				NocheCasilla_16.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(16.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 17) {
+			SelecCasilla_17.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_17.UseTexture();
+			}
+			else {
+				NocheCasilla_17.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(24.5f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 18) {
+			SelecCasilla_18.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_18.UseTexture();
+			}
+			else {
+				NocheCasilla_18.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(33.0f, -1.8f, -43.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 19) {
+			SelecCasilla_19.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_19.UseTexture();
+			}
+			else {
+				NocheCasilla_19.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, -43.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 20) {
+			SelecCasilla_20.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_20.UseTexture();
+			}
+			else {
+				NocheCasilla_20.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[7]->RenderMesh();
+
+		//				Fauna				//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, -33.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 21) {
+			SelecCasilla_21.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_21.UseTexture();
+			}
+			else {
+				NocheCasilla_21.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, -24.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 22) {
+			SelecCasilla_22.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_22.UseTexture();
+			}
+			else {
+				NocheCasilla_22.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, -16.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 23) {
+			SelecCasilla_23.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_23.UseTexture();
+			}
+			else {
+				NocheCasilla_23.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, -8.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 24) {
+			SelecCasilla_24.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_24.UseTexture();
+			}
+			else {
+				NocheCasilla_24.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 0.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 25) {
+			SelecCasilla_25.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_25.UseTexture();
+			}
+			else {
+				NocheCasilla_25.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 8.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 26) {
+			SelecCasilla_26.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_26.UseTexture();
+			}
+			else {
+				NocheCasilla_26.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 16.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 27) {
+			SelecCasilla_27.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_27.UseTexture();
+			}
+			else {
+				NocheCasilla_27.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 25.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 28) {
+			SelecCasilla_28.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_28.UseTexture();
+			}
+			else {
+				NocheCasilla_28.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 33.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 29) {
+			SelecCasilla_29.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_29.UseTexture();
+			}
+			else {
+				NocheCasilla_29.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, -1.8f, 44.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 30) {
+			SelecCasilla_30.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_30.UseTexture();
+			}
+			else {
+				NocheCasilla_30.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[7]->RenderMesh();
+
+		//				Personajes			//
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(33.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 31) {
+			SelecCasilla_31.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_31.UseTexture();
+			}
+			else {
+				NocheCasilla_31.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(24.5f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 32) {
+			SelecCasilla_32.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_32.UseTexture();
+			}
+			else {
+				NocheCasilla_32.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(16.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 33) {
+			SelecCasilla_33.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_33.UseTexture();
+			}
+			else {
+				NocheCasilla_33.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(8.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 34) {
+			SelecCasilla_34.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_34.UseTexture();
+			}
+			else {
+				NocheCasilla_34.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-0.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 35) {
+			SelecCasilla_35.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_35.UseTexture();
+			}
+			else {
+				NocheCasilla_35.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-8.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 36) {
+			SelecCasilla_36.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_36.UseTexture();
+			}
+			else {
+				NocheCasilla_36.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-16.2f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 37) {
+			SelecCasilla_37.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_37.UseTexture();
+			}
+			else {
+				NocheCasilla_37.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-24.5f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 38) {
+			SelecCasilla_38.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_38.UseTexture();
+			}
+			else {
+				NocheCasilla_38.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-33.0f, -1.8f, 44.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		if (estado == 39) {
+			SelecCasilla_39.UseTexture();
+		}
+		else {
+			if (dia) {
+				DiaCasilla_39.UseTexture();
+			}
+			else {
+				NocheCasilla_39.UseTexture();
+			}
+		}
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[6]->RenderMesh();
+
+		// Fin
 
 
 		glUseProgram(0);
