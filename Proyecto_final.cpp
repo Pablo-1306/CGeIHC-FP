@@ -7,7 +7,7 @@
 //*/
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
-
+#define MINIAUDIO_IMPLEMENTATION
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -18,6 +18,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+#include <miniaudio.h>
 
 #include <glew.h>
 #include <glfw3.h>
@@ -79,6 +80,8 @@ unsigned int val;
 // Control del tablero //
 int estado;
 bool Animacion;
+int pasosx;
+int pasosz;
 
 //Tiempo
 float tiempoAcumulado;
@@ -590,6 +593,27 @@ float RotacionAvanzada(float tIni, float tiempoAcumulado) {
 	return rotacion * toRadians;
 }
 
+void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
+{
+	ma_decoder* pDecoder = (ma_decoder*)pDevice->pUserData;
+	if (pDecoder == NULL) {
+		return;
+	}
+
+	/* Reading PCM frames will loop based on what we specified when called ma_data_source_set_looping(). */
+	ma_data_source_read_pcm_frames(pDecoder, pOutput, frameCount, NULL);
+
+	(void)pInput;
+}
+
+// Función para calcular la distancia entre dos puntos en 3D
+float calculateDistance(float x1, float y1, float z1, float x2, float y2, float z2) {
+	return std::sqrt((x2 - x1) * (x2 - x1) +
+		(y2 - y1) * (y2 - y1) +
+		(z2 - z1) * (z2 - z1));
+}
+
+
 int main()
 {
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
@@ -598,7 +622,30 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -50.0f, -50.0f, 0.3f, 0.5f);
+	camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f),- 50.0f, -46.0f, 0.3f, 0.5f);
+
+	////generar el soundtrack 
+	
+	// Inicializar el motor de audio miniaudio
+	// Configurar el motor de audio con soporte 3D
+	ma_engine_config engineConfig = ma_engine_config_init();
+	engineConfig.listenerCount = 1; // Habilitar un oyente
+	ma_engine engine;
+	if (ma_engine_init(&engineConfig, &engine) != MA_SUCCESS) {
+		std::cerr << "Error al inicializar miniaudio" << std::endl;
+		return -1;
+	}
+
+	// Cargar el soundtrack (audio continuo)
+	ma_sound soundtrack;
+	if (ma_sound_init_from_file(&engine, "HALO.mp3", MA_SOUND_FLAG_STREAM, nullptr, nullptr, &soundtrack) != MA_SUCCESS) {
+		std::cerr << "Error al cargar el soundtrack" << std::endl;
+		ma_engine_uninit(&engine);
+		return -1;
+	}
+	ma_sound_set_looping(&soundtrack, MA_TRUE); // Loop infinito del soundtrack
+	ma_sound_start(&soundtrack);
+
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -1071,32 +1118,10 @@ int main()
 
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//Declaración de primer luz puntual
-	/*pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,
-		-60.0f, 15.0f, 60.f,
-		0.3f, 0.2f, 0.1f);
-	pointLightCount++;*/
-
-	////Declaración de luz de mi lampara	
-	//pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,	// Color blanco
-	//	1.0f, 3.0f,					// Intensidad alta para que se note
-	//	40.0f, 10.0f, 0.0f,			// Posicion centrada en la lampara
-	//	0.1f, 0.1f, 0.02f);			// Atenuacion
-	//pointLightCount++;
 
 	unsigned int spotLightCount = 0;
-	////linterna
-	//spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-	//	0.0f, 1.0f,
-	//	0.0f, 0.0f, 0.0f,
-	//	0.0f, -1.0f, 0.0f,
-	//	1.0f, 0.0f, 0.0f,
-	//	//Tama�o cono
-	//	20.0f);
-	//spotLightCount++;
 
-	////luz fija
+	////luz nocturna fija
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
 		2.0f, 2.0f,
 		50.0f, 10.0f, 50.0f,
@@ -1105,25 +1130,7 @@ int main()
 		25.0f);
 	spotLightCount++;
 
-	////luz Faro
-	//spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Color Azul
-	//	1.0f, 2.0f,
-	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
-	//	-5.0f, 0.0f, 0.0f,		//Direccion en -X
-	//	1.0f, 0.0f, 0.0f,
-	//	25.0f);
-	//spotLightCount++;
-
-	////luz Helicoptero
-	//spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f, //Color Amarillo
-	//	1.0f, 2.0f,
-	//	15.0f, 2.0f, 0.0f,		//Posicion inicial
-	//	-2.0f, -5.0f, 0.0f,		//Direccion Ligeramente hacia adelante para parecer realista
-	//	1.0f, 0.0f, 0.0f,
-	//	25.0f);
-	//spotLightCount++;
-
-	//se crean mas luces puntuales y spotlight 
+	
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0, uniformSpecularIntensity = 0, uniformShininess = 0;
 	GLuint uniformColor = 0;
@@ -1151,12 +1158,14 @@ int main()
 	v2 = v1;
 	v3 = true;
 	dia = true;
+	pasosx = -45;
+	pasosz = 45;
 
 	// Tablero
 	estado = 0;
 
-	movX = 0.0f;
-	movZ = 0.0f;
+	movX = -45.0f;
+	movZ = 45.0f;
 	offsetMovHel = 0.5f;
 
 	rotY = 0.0f;
@@ -1218,7 +1227,7 @@ int main()
 			v3 = v1;
 		}
 		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_C)) {
-			camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -50.0f, -50.0f, 0.3f, 0.5f);
+			camera = Camera(glm::vec3(-50.0f, 60.0f, 70.0f), glm::vec3(0.0f, 1.0f, 0.0f), -50.0f, -46.0f, 0.3f, 0.5f);
 			v3 = true;
 			v1 = false;
 			v2 = v1;
@@ -1262,7 +1271,7 @@ int main()
 		//Tiempo durante la ejecucion
 		tiempoAcumulado = glfwGetTime();;
 
-		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true) {
+		if (glfwGetKey(mainWindow.getMainWindow(), GLFW_KEY_T) && alternar && finaliza == true && avanza==false) {
 			salto = 3.5;
 			srand((unsigned)time(NULL));
 			c = (rand() % 5) + 1;
@@ -1275,6 +1284,7 @@ int main()
 			pasosEnTablero = (c + c_2);
 			printf("Avanza: %d\n", pasosEnTablero);
 			alternar = false;
+			avanza = true;
 
 			//////////////////////////////////////
 			//		Control del Tablero			//
@@ -1327,7 +1337,6 @@ int main()
 		}
 		else {
 			finaliza = true;
-			avanza = true;
 			if (c == 1 || c == 2 || c == 5 || c == 6) {
 				rotDado_8 = 2.5f;
 				rotDado8 = 50;
@@ -1404,11 +1413,6 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		// luz ligada a la cámara de tipo flash
-		//sirve para que en tiempo de ejecución (dentro del while) se cambien propiedades de la luz
-		/*glm::vec3 lowerLight = camera.getCameraPosition();
-		lowerLight.y -= 0.3f;
-		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());*/
 
 		//información al shader de fuentes de iluminación
 		shaderList[0].SetDirectionalLight(&mainLight);
@@ -1425,8 +1429,6 @@ int main()
 		// Guardo la posición del personaje
 		glm::vec3 PosicionPersonaje;
 
-		//// Luz que sigue al personaje
-		//pointLights[1].SetPos(Personaje);  // Actualiza la posición de la luz
 
 		glm::mat4 model(1.0);
 		glm::mat4 modelaux(1.0);
@@ -2295,177 +2297,184 @@ int main()
 		//////////////////////////////////////
 
 		if (finaliza) {
-
 			if (estado >= 0 && estado < 10) {
-				rotY = -180.0f;
-				if (estado == 0) {
-					movX = -45.0f;
-					movZ = 45.0f;
+				if (movX > -45.0f) {
+					movX -= 0.2;
 				}
-				if (estado == 1) {
+				else {
+					rotY = -180.0f;
 					movX = -45.0f;
-					movZ = 33.0f;
-				}
-				if (estado == 2) {
-					movX = -45.0f;
-					movZ = 25.0f;
-				}
-				if (estado == 3) {
-					movX = -45.0f;
-					movZ = 17.0f;
-				}
-				if (estado == 4) {
-					movX = -45.0f;
-					movZ = 8.0f;
-				}
-				if (estado == 5) {
-					movX = -45.0f;
-					movZ = 0;
-				}
-				if (estado == 6) {
-					movX = -45.0f;
-					movZ = -8.0f;
-				}
-				if (estado == 7) {
-					movX = -45.0f;
-					movZ = -17.0f;
-				}
-				if (estado == 8) {
-					movX = -45.0f;
-					movZ = -25.0f;
-				}
-				if (estado == 9) {
-					movX = -45.0f;
-					movZ = -33.0f;
+					if (estado == 0) {
+						pasosz = 45.0f;
+					}
+					else if (estado == 1) {
+						pasosz = 33.0f;
+					}
+					else if (estado == 2) {
+						pasosz = 25.0f;
+					}
+					else if (estado == 3) {
+						pasosz = 17.0f;
+					}
+					else if (estado == 4) {
+						pasosz = 8.0f;
+					}
+					else if (estado == 5) {
+						pasosz = 0;
+					}
+					else if (estado == 6) {
+						pasosz = -8.0f;
+					}
+					else if (estado == 7) {
+						pasosz = -17.0f;
+					}
+					else if (estado == 8) {
+						pasosz = -25.0f;
+					}
+					else if (estado == 9) {
+						pasosz = -33.0f;
+					}
+					if ((movZ - 0.2) > pasosz) {
+						movZ -= 0.2;
+					}
+					else {
+						avanza = false;
+					}
 				}
 			}
 			if (estado >= 10 && estado < 20) {
-				rotY = -270.0f;
-				if (estado == 10) {
-					movX = -45.0f;
-					movZ = -45.0f;
+				if (movZ > -45.0f) {
+					movZ -= 0.2;
 				}
-				if (estado == 11) {
-					movX = -33.0f;
+				else {
+					rotY = -270.0f;
 					movZ = -45.0f;
-				}
-				if (estado == 12) {
-					movX = -25.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 13) {
-					movX = -17.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 14) {
-					movX = -8.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 15) {
-					movX = 0.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 16) {
-					movX = 8.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 17) {
-					movX = 17.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 18) {
-					movX = 25.0f;
-					movZ = -45.0f;
-				}
-				if (estado == 19) {
-					movX = 33.0f;
-					movZ = -45.0f;
+					if (estado == 10) {
+						pasosx = -45.0f;
+					}
+					else if (estado == 11) {
+						pasosx = -33.0f;
+					}
+					else if (estado == 12) {
+						pasosx = -25.0f;
+					}
+					else if (estado == 13) {
+						pasosx = -17.0f;
+					}
+					else if (estado == 14) {
+						pasosx = -8.0f;
+					}
+					else if (estado == 15) {
+						pasosx = 0.0f;
+					}
+					else if (estado == 16) {
+						pasosx = 8.0f;
+					}
+					else if (estado == 17) {
+						pasosx = 17.0f;
+					}
+					else if (estado == 18) {
+						pasosx = 25.0f;
+					}
+					else if (estado == 19) {
+						pasosx = 33.0f;
+					}
+					if ((movX + 0.2) < pasosx) {
+						movX += 0.2;
+					}
+					else {
+						avanza = false;
+					}
 				}
 			}
 			if (estado >= 20 && estado < 30) {
-				rotY = 0.0f;
-				if (estado == 20) {
-					movX = 45.0f;
-					movZ = -45.0f;
+				if (movX < 45.0f) {
+					movX += 0.2;
 				}
-				if (estado == 21) {
+				else {
+					rotY = 0.0f;
 					movX = 45.0f;
-					movZ = -33.0f;
-				}
-				if (estado == 22) {
-					movX = 45.0f;
-					movZ = -25.0f;
-				}
-				if (estado == 23) {
-					movX = 45.0f;
-					movZ = -17.0f;
-				}
-				if (estado == 24) {
-					movX = 45.0f;
-					movZ = -8.0f;
-				}
-				if (estado == 25) {
-					movX = 45.0f;
-					movZ = 0.0f;
-				}
-				if (estado == 26) {
-					movX = 45.0f;
-					movZ = 8.0f;
-				}
-				if (estado == 27) {
-					movX = 45.0f;
-					movZ = 17.0f;
-				}
-				if (estado == 28) {
-					movX = 45.0f;
-					movZ = 25.0f;
-				}
-				if (estado == 29) {
-					movX = 45.0f;
-					movZ = 33.0f;
+					if (estado == 20) {
+						pasosz = -45.0f;
+					}
+					else if (estado == 21) {
+						pasosz = -33.0f;
+					}
+					else if (estado == 22) {
+						pasosz = -25.0f;
+					}
+					else if (estado == 23) {
+						pasosz = -17.0f;
+					}
+					else if (estado == 24) {
+						pasosz = -8.0f;
+					}
+					else if (estado == 25) {
+						pasosz = 0.0f;
+					}
+					else if (estado == 26) {
+						pasosz = 8.0f;
+					}
+					else if (estado == 27) {
+						pasosz = 17.0f;
+					}
+					else if (estado == 28) {
+						pasosz = 25.0f;
+					}
+					else if (estado == 29) {
+						pasosz = 33.0f;
+					}
+					if ((movZ + 0.2) < pasosz) {
+						movZ += 0.2;
+					}
+					else {
+						avanza = false;
+					}
 				}
 			}
 			if (estado >= 30 && estado < 40) {
-				rotY = -90.0f;
-				if (estado == 30) {
-					movX = 45.0f;
-					movZ = 45.0f;
+				if (movZ < 45.0f) {
+					movZ += 0.2;
 				}
-				if (estado == 31) {
-					movX = 33.0f;
+				else {
+					rotY = -90.0f;
 					movZ = 45.0f;
-				}
-				if (estado == 32) {
-					movX = 25.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 33) {
-					movX = 17.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 34) {
-					movX = 8.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 35) {
-					movX = 0.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 36) {
-					movX = -8.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 37) {
-					movX = -17.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 38) {
-					movX = -25.0f;
-					movZ = 45.0f;
-				}
-				if (estado == 39) {
-					movX = -33.0f;
-					movZ = 45.0f;
+					if (estado == 30) {
+						pasosx = 45.0f;
+					}
+					if (estado == 31) {
+						pasosx = 33.0f;
+					}
+					if (estado == 32) {
+						pasosx = 25.0f;
+					}
+					if (estado == 33) {
+						pasosx = 17.0f;
+					}
+					if (estado == 34) {
+						pasosx = 8.0f;
+					}
+					if (estado == 35) {
+						pasosx = 0.0f;
+					}
+					if (estado == 36) {
+						pasosx = -8.0f;
+					}
+					if (estado == 37) {
+						pasosx = -17.0f;
+					}
+					if (estado == 38) {
+						pasosx = -25.0f;
+					}
+					if (estado == 39) {
+						pasosx = -33.0f;
+					}
+					if ((movX - 0.2) > pasosx) {
+						movX -= 0.2;
+					}
+					else {
+						avanza = false;
+					}
 				}
 			}
 		}
@@ -3260,6 +3269,12 @@ int main()
 
 		mainWindow.swapBuffers();
 	}
+
+	// Liberar recursos
+	/*ma_device_uninit(&device);
+	ma_decoder_uninit(&decoder);*/
+	ma_sound_uninit(&soundtrack);
+	ma_engine_uninit(&engine);
 
 	return 0;
 }
