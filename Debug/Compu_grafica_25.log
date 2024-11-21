@@ -1,1 +1,62 @@
-﻿  Compu_grafica_25.vcxproj -> C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Debug\Compu_grafica_25.exe
+﻿  Proyecto_Final.cpp
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Proyecto_Final.cpp")
+  
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Proyecto_Final.cpp")
+  
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(827,24): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(829,26): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(832,26): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(840,24): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(847,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(849,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(853,32): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1893,17): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1899,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1902,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1905,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1908,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1911,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1917,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1920,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1923,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1926,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1929,18): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1938,17): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1944,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1947,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1950,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1953,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1956,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1959,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1962,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1965,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1968,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1971,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1974,18): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1983,17): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1989,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1992,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1995,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(1998,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2001,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2004,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2007,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2010,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2013,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2016,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2019,18): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2028,17): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2034,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2037,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2040,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2043,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2046,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2049,16): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2052,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2055,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2058,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2061,17): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Proyecto_Final.cpp(2064,18): warning C4305: '-=': truncamiento de 'double' a 'float'
+  Compu_grafica_25.vcxproj -> C:\Users\pablo_q1suczv\OneDrive\Documentos\Proyecto_Compú_Grafica\Compu_grafica_25\Debug\Compu_grafica_25.exe
